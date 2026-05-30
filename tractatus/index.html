@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>逻辑哲学论 · 思维导图</title>
+  <meta name="description" content="维特根斯坦《逻辑哲学论》交互式思维导图——逐层展开学习">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="header-top">
+        <h1 class="title">
+          <span class="title-zh">逻辑哲学论</span>
+          <span class="title-en">Tractatus Logico‑Philosophicus</span>
+        </h1>
+        <span class="author">路德维希·维特根斯坦</span>
+      </div>
+      <div class="toolbar">
+        <button id="searchBtn" class="tool-btn" title="搜索 (Ctrl+K)">🔍 搜索</button>
+        <button id="collapseAllBtn" class="tool-btn">📂 全部收起</button>
+        <button id="expandToBtn" class="tool-btn">📖 全部展开</button>
+        <button id="mobileToggle" class="tool-btn mobile-only">📋 大纲 / 正文</button>
+      </div>
+      <div id="searchBox" class="search-box hidden">
+        <input type="text" id="searchInput" placeholder="搜索命题编号或关键词…" autocomplete="off">
+        <span id="searchCount" class="search-count"></span>
+        <button id="searchClear" class="search-clear">✕</button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <aside id="treePanel" class="panel-tree">
+        <div class="tree-intro" id="treeIntro">
+          <div class="tree-row intro-row" data-id="__intro__">
+            <span class="tree-toggle no-children"></span>
+            <span class="tree-number intro-number">📖</span>
+            <span class="tree-text">简介</span>
+          </div>
+          <div class="tree-row intro-row" data-id="__glossary__">
+            <span class="tree-toggle no-children"></span>
+            <span class="tree-number intro-number">📝</span>
+            <span class="tree-text">术语对照</span>
+          </div>
+        </div>
+        <div class="tree-sep"></div>
+        <div id="treeRoot" class="tree"></div>
+      </aside>
+
+      <section id="detailPanel" class="panel-detail">
+        <div id="introContent" class="intro-content">
+          <div class="intro-hero">
+            <h2>路德维希·维特根斯坦</h2>
+            <p class="intro-hero-en">Ludwig Wittgenstein · 1889—1951</p>
+          </div>
+
+          <div class="intro-section">
+            <h3>生平</h3>
+            <p>路德维希·约瑟夫·约翰·维特根斯坦（Ludwig Josef Johann Wittgenstein）是奥地利-英国哲学家，20世纪最具影响力的思想家之一。</p>
+            <p>1889年出生于维也纳一个富有的工业家族，父亲卡尔·维特根斯坦是奥匈帝国的钢铁巨头。维特根斯坦早年对工程技术感兴趣，1908年前往曼彻斯特学习航空工程。在研究螺旋桨设计的过程中，他对数学基础问题产生了浓厚兴趣，这将他引向了哲学。</p>
+            <p>1911年，维特根斯坦前往剑桥大学三一学院拜访伯特兰·罗素，展示了他在逻辑方面的笔记。罗素立即认识到他的天才，并成为他的导师。1914年一战爆发，维特根斯坦自愿加入奥匈帝国军队。在军旅生涯中，他持续进行哲学思考和写作。1918年夏休假期间，他完成了《逻辑哲学论》的最终定稿，后随身携带手稿被俘于意大利战俘营。</p>
+            <p>1922年《逻辑哲学论》出版后，维特根斯坦认为哲学问题已经全部解决，遂离开哲学界。他先后在奥地利乡村担任小学教师、修道院的园丁，还为姐姐设计了一栋住宅。1929年，在剑桥学者们的劝说下，他重返哲学，逐渐发展出一套与早期思想截然不同的新哲学。晚年被剑桥大学任命为哲学教授，1951年因前列腺癌去世。</p>
+            <p>他的主要著作除《逻辑哲学论》（1922）外，还有遗著《哲学研究》（1953），后者开创了日常语言哲学传统，深刻影响了20世纪下半叶的整个哲学走向。</p>
+            <p style="text-align: right; color: gray;">——以上内容来自百度百科</p>
+          </div>
+
+          <div class="intro-section">
+            <h3>《逻辑哲学论》</h3>
+            <p>《逻辑哲学论》（Tractatus Logico-Philosophicus）是维特根斯坦生前出版的唯一一部哲学著作，代表了他的<strong>早期哲学思想</strong>。 </p>
+            <p>该书以德文写作，原题 Logisch-philosophische Abhandlung，1921年首次发表于奥斯特瓦尔德的《自然哲学年鉴》。</p>
+            <p>1922年由 C. K. Ogden 译为英文，罗素作序，以拉丁文标题 Tractatus Logico-Philosophicus 出版。</p>
+
+            <h4>这本书要解决的核心问题</h4>
+            <ul>
+              <li>语言与世界的关系是什么？</li>
+              <li>一个有意义的命题必须满足什么条件？</li>
+              <li>哲学能做什么、不能做什么？</li>
+            </ul>
+
+            <h4>全书的七个主命题</h4>
+            <ol>
+              <li>世界是一切发生的事情。</li>
+              <li>发生的事情——事实——是事态的存在。</li>
+              <li>事实的逻辑图像是思想。</li>
+              <li>思想是有意义的命题。</li>
+              <li>命题是基本命题的真值函项。</li>
+              <li>真值函项的一般形式是 [p, ξ, N(ξ)]。</li>
+              <li>对于不可言说的东西，必须保持沉默。</li>
+            </ol>
+
+            <h4>关键概念</h4>
+            <p><strong>图像论</strong>——命题是实在的逻辑图像。语言之所以能描述世界，是因为命题与世界具有相同的逻辑形式，如同乐谱与声音之间的关系。</p>
+            <p><strong>真值函项理论</strong>——一切有意义的命题都可以分析为基本命题的真值函项。复杂的命题最终都可还原为对最简单命题的逻辑运算。</p>
+            <p><strong>可说与不可说</strong>——语言的界限就是思想的界限。凡是能够说的，都能够说清楚；对于不可言说的东西，必须保持沉默。伦理学、美学、形而上学属于"不可说"的领域。</p>
+            <p><strong>梯子比喻</strong>（6.54）——本书的命题是一架梯子：读者通过它们攀爬上去，一旦登顶之后就必须将梯子扔掉。凡是理解维特根斯坦的人，最终会认识到这些命题本身也是无含义的——它们是用来让人看世界的方式发生转变的工具。</p>
+
+            <h4>历史地位</h4>
+            <p>《逻辑哲学论》是分析哲学的奠基性文本，深刻影响了维也纳学派的逻辑实证主义运动。</p>
+            <p>然而维特根斯坦的独特性在于：他后期在《哲学研究》中对自己早期的观点进行了批判，发展出"语言游戏""家族相似""遵守规则""生活形式"等全新概念，开创了日常语言哲学传统。</p>
+            <p>理解维特根斯坦，意味着理解两种截然不同、却同样深刻的哲学范式。</p>
+            <p class="intro-note">📖 本页面以思维导图的形式呈现《逻辑哲学论》的全文结构。左侧大纲树中，深层级命题是对浅层级命题的评注。点击任意命题即可阅读其全文及四语对照。</p>
+          </div>
+        </div>
+
+        <div id="glossaryContent" class="glossary-content intro-content hidden">
+          <div class="intro-hero">
+            <h2>术语对照表</h2>
+            <p class="intro-hero-en">Terminologie · Glossary · Begriffserklärungen</p>
+          </div>
+
+          <div class="intro-section">
+            <p>《逻辑哲学论》的核心术语在不同译本中有不同译法。以下列出主要术语的德文原文、两种通行英译、以及中文学界常见译法，供对照阅读时参考。</p>
+            <p class="glossary-note">注意：Ogden 与 P/M 的翻译方案不同，同一英语词组可能对应不同德语术语（如 "state of affairs" 在 Ogden 中译 Sachlage、在 P/M 中译 Sachverhalt）。阅读时请以译者方案为准，勿跨译本直接对等。</p>
+          </div>
+
+          <table class="glossary-table">
+            <thead>
+              <tr>
+                <th>德文</th>
+                <th>Ogden 英译</th>
+                <th>P/M 英译</th>
+                <th>中文通行译法</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="germ">Sachverhalt</td>
+                <td>atomic fact</td>
+                <td>state of affairs</td>
+                <td>事态 / 原子事实</td>
+              </tr>
+              <tr>
+                <td class="germ">Tatsache</td>
+                <td>fact</td>
+                <td>fact</td>
+                <td>事实</td>
+              </tr>
+              <tr>
+                <td class="germ">Sachlage</td>
+                <td>state of affairs</td>
+                <td>situation</td>
+                <td>情况 / 处境</td>
+              </tr>
+              <tr>
+                <td class="germ">Gegenstand</td>
+                <td>object</td>
+                <td>object</td>
+                <td>对象 / 事物</td>
+              </tr>
+              <tr>
+                <td class="germ">Ding</td>
+                <td>thing</td>
+                <td>thing</td>
+                <td>事物 / 物</td>
+              </tr>
+              <tr>
+                <td class="germ">Bild</td>
+                <td>picture</td>
+                <td>picture</td>
+                <td>图像 / 图式 / 图画</td>
+              </tr>
+              <tr>
+                <td class="germ">Abbildung</td>
+                <td>representation</td>
+                <td>representation</td>
+                <td>描画 / 摹写</td>
+              </tr>
+              <tr>
+                <td class="germ">Satz</td>
+                <td>proposition</td>
+                <td>proposition</td>
+                <td>命题</td>
+              </tr>
+              <tr>
+                <td class="germ">Elementarsatz</td>
+                <td>elementary proposition</td>
+                <td>elementary proposition</td>
+                <td>基本命题 / 原初命题</td>
+              </tr>
+              <tr>
+                <td class="germ">Satzzeichen</td>
+                <td>propositional sign</td>
+                <td>propositional sign</td>
+                <td>命题记号</td>
+              </tr>
+              <tr>
+                <td class="germ">Wahrheitsfunktion</td>
+                <td>truth-function</td>
+                <td>truth-function</td>
+                <td>真值函项</td>
+              </tr>
+              <tr>
+                <td class="germ">Wahrheitsbedingung</td>
+                <td>truth-condition</td>
+                <td>truth-condition</td>
+                <td>真值条件</td>
+              </tr>
+              <tr>
+                <td class="germ">Tautologie</td>
+                <td>tautology</td>
+                <td>tautology</td>
+                <td>重言式 / 同语反复</td>
+              </tr>
+              <tr>
+                <td class="germ">Kontradiktion</td>
+                <td>contradiction</td>
+                <td>contradiction</td>
+                <td>矛盾式</td>
+              </tr>
+              <tr>
+                <td class="germ">Sinn</td>
+                <td>sense</td>
+                <td>sense</td>
+                <td>含义 / 意义</td>
+              </tr>
+              <tr>
+                <td class="germ">Bedeutung</td>
+                <td>meaning</td>
+                <td>meaning</td>
+                <td>指谓 / 意谓</td>
+              </tr>
+              <tr>
+                <td class="germ">Unsinn</td>
+                <td>nonsense</td>
+                <td>nonsense</td>
+                <td>无意义 / 胡说</td>
+              </tr>
+              <tr>
+                <td class="germ">sinnlos</td>
+                <td>senseless</td>
+                <td>nonsensical</td>
+                <td>无含义的 / 无意义的</td>
+              </tr>
+              <tr>
+                <td class="germ">Gedanke</td>
+                <td>thought</td>
+                <td>thought</td>
+                <td>思想</td>
+              </tr>
+              <tr>
+                <td class="germ">Wirklichkeit</td>
+                <td>reality</td>
+                <td>reality</td>
+                <td>实在 / 现实</td>
+              </tr>
+              <tr>
+                <td class="germ">Welt</td>
+                <td>world</td>
+                <td>world</td>
+                <td>世界</td>
+              </tr>
+              <tr>
+                <td class="germ">Substanz</td>
+                <td>substance</td>
+                <td>substance</td>
+                <td>实体</td>
+              </tr>
+              <tr>
+                <td class="germ">Form</td>
+                <td>form</td>
+                <td>form</td>
+                <td>形式</td>
+              </tr>
+              <tr>
+                <td class="germ">logische Form</td>
+                <td>logical form</td>
+                <td>logical form</td>
+                <td>逻辑形式</td>
+              </tr>
+              <tr>
+                <td class="germ">logischer Raum</td>
+                <td>logical space</td>
+                <td>logical space</td>
+                <td>逻辑空间</td>
+              </tr>
+              <tr>
+                <td class="germ">Struktur</td>
+                <td>structure</td>
+                <td>structure</td>
+                <td>结构</td>
+              </tr>
+              <tr>
+                <td class="germ">Konfiguration</td>
+                <td>configuration</td>
+                <td>configuration</td>
+                <td>配置 / 组态</td>
+              </tr>
+              <tr>
+                <td class="germ">intern</td>
+                <td>internal</td>
+                <td>internal</td>
+                <td>内在的 / 内部的</td>
+              </tr>
+              <tr>
+                <td class="germ">extern</td>
+                <td>external</td>
+                <td>external</td>
+                <td>外在的 / 外部的</td>
+              </tr>
+              <tr>
+                <td class="germ">Zeichen</td>
+                <td>sign</td>
+                <td>sign</td>
+                <td>记号</td>
+              </tr>
+              <tr>
+                <td class="germ">Symbol</td>
+                <td>symbol</td>
+                <td>symbol</td>
+                <td>符号</td>
+              </tr>
+              <tr>
+                <td class="germ">Name</td>
+                <td>name</td>
+                <td>name</td>
+                <td>名称 / 名字</td>
+              </tr>
+              <tr>
+                <td class="germ">Variable</td>
+                <td>variable</td>
+                <td>variable</td>
+                <td>变项 / 变量</td>
+              </tr>
+              <tr>
+                <td class="germ">Funktion</td>
+                <td>function</td>
+                <td>function</td>
+                <td>函项 / 函数</td>
+              </tr>
+              <tr>
+                <td class="germ">Operation</td>
+                <td>operation</td>
+                <td>operation</td>
+                <td>运算 / 运演</td>
+              </tr>
+              <tr>
+                <td class="germ">Negation</td>
+                <td>negation</td>
+                <td>negation</td>
+                <td>否定</td>
+              </tr>
+              <tr>
+                <td class="germ">der Fall sein</td>
+                <td>be the case</td>
+                <td>be the case</td>
+                <td>发生 / 如此</td>
+              </tr>
+              <tr>
+                <td class="germ">bestehen</td>
+                <td>exist / existent</td>
+                <td>subsist / exist</td>
+                <td>实存 / 存在</td>
+              </tr>
+              <tr>
+                <td class="germ">zeigen</td>
+                <td>show</td>
+                <td>show</td>
+                <td>显示 / 表明</td>
+              </tr>
+              <tr>
+                <td class="germ">sagen</td>
+                <td>say</td>
+                <td>say</td>
+                <td>说 / 言说</td>
+              </tr>
+              <tr>
+                <td class="germ">Grenze</td>
+                <td>limit</td>
+                <td>limit</td>
+                <td>界限 / 边界</td>
+              </tr>
+              <tr>
+                <td class="germ">das Mystische</td>
+                <td>the mystical</td>
+                <td>the mystical</td>
+                <td>神秘之物 / 神秘的东西</td>
+              </tr>
+              <tr>
+                <td class="germ">Erläuterung</td>
+                <td>elucidation</td>
+                <td>elucidation</td>
+                <td>阐释 / 解说</td>
+              </tr>
+              <tr>
+                <td class="germ">Klärung</td>
+                <td>clarification</td>
+                <td>clarification</td>
+                <td>澄清</td>
+              </tr>
+              <tr>
+                <td class="germ">logische Syntax</td>
+                <td>logical syntax</td>
+                <td>logical syntax</td>
+                <td>逻辑句法</td>
+              </tr>
+              <tr>
+                <td class="germ">Formenreihe</td>
+                <td>formal series</td>
+                <td>formal series</td>
+                <td>形式序列</td>
+              </tr>
+              <tr>
+                <td class="germ">Satz der Naturwissenschaft</td>
+                <td>proposition of natural science</td>
+                <td>proposition of natural science</td>
+                <td>自然科学命题</td>
+              </tr>
+              <tr>
+                <td class="germ">Solipsismus</td>
+                <td>solipsism</td>
+                <td>solipsism</td>
+                <td>唯我论</td>
+              </tr>
+              <tr>
+                <td class="germ">Ethik</td>
+                <td>ethics</td>
+                <td>ethics</td>
+                <td>伦理学</td>
+              </tr>
+              <tr>
+                <td class="germ">Ästhetik</td>
+                <td>aesthetics</td>
+                <td>aesthetics</td>
+                <td>美学</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="detailContent" class="detail-content hidden">
+          <nav id="breadcrumb" class="breadcrumb"></nav>
+
+          <article class="proposition">
+            <div id="propNumber" class="prop-number"></div>
+            <div id="propText" class="prop-text"></div>
+          </article>
+
+          <div id="subProps" class="sub-props"></div>
+
+          <div class="original-section">
+            <button id="originalToggle" class="original-toggle">
+              <span class="toggle-icon">▸</span> 显示原文
+            </button>
+            <div id="originalText" class="original-text hidden">
+              <div class="original-lang">
+                <h4>德文 (Original)</h4>
+                <p id="origDe"></p>
+              </div>
+              <div class="original-lang">
+                <h4>英文 · Ogden 译</h4>
+                <p id="origEnOgden"></p>
+              </div>
+              <div class="original-lang">
+                <h4>英文 · Pears/McGuinness 译</h4>
+                <p id="origEnPM"></p>
+              </div>
+            </div>
+          </div>
+
+          <nav class="detail-nav">
+            <button id="navPrev" class="nav-btn">← 上一条</button>
+            <button id="navParent" class="nav-btn">↑ 上一级</button>
+            <button id="navNext" class="nav-btn">下一条 →</button>
+          </nav>
+
+          <div id="translationBadge" class="translation-badge hidden">翻译中…</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

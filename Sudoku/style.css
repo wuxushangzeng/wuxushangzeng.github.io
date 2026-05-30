@@ -1,0 +1,415 @@
+:root {
+    --cell-bg: #ffffff;
+    --cell-static-bg: #ffffff;
+    --cell-selected: #bbdefb;
+    --cell-related: #e8f0fe;
+    --cell-same-number: #c8e6c9;
+    --cell-error: #ffcdd2;
+    --border-thin: #bfbfbf;
+    --border-thick: #333333;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: #222;
+}
+
+#Wrapper {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 30px 35px;
+    max-width: 950px;
+    width: 100%;
+}
+
+#Main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#PageTitle {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+#Content {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.board-container {
+    position: relative;
+}
+
+#sudokuBoard {
+    border: 3px solid #333;
+    border-collapse: collapse;
+    background: #ffffff;
+    user-select: none;
+}
+
+#sudokuBoard > table {
+    border-collapse: collapse;
+}
+
+.boardCellGroupA,
+.boardCellGroupB {
+    padding: 0;
+    margin: 0;
+}
+
+.boardCellGroupA > table,
+.boardCellGroupB > table {
+    border-collapse: collapse;
+}
+
+.boardCell {
+    width: 56px;
+    height: 56px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #bfbfbf;
+    cursor: pointer;
+    background: #ffffff;
+    position: relative;
+    transition: background 0.15s ease;
+    padding: 0;
+}
+
+.boardCellGroupA > table > tbody > tr:nth-child(3) > td,
+.boardCellGroupB > table > tbody > tr:nth-child(3) > td {
+    border-bottom: 2px solid #333;
+}
+.boardCellGroupA > table > tbody > tr > td:nth-child(3),
+.boardCellGroupB > table > tbody > tr > td:nth-child(3) {
+    border-right: 2px solid #333;
+}
+
+.boardCell:hover {
+    background: #f0f4ff;
+}
+
+.boardCell.selected {
+    background: #bbdefb !important;
+    box-shadow: inset 0 0 0 2px #1976d2;
+    z-index: 2;
+}
+
+.boardCell.related {
+    background: #e8f0fe !important;
+}
+
+.boardCell.sameNumber {
+    background: #c8e6c9 !important;
+}
+
+.boardCell.error {
+    background: #ffcdd2 !important;
+}
+
+/* .boardCell.staticCell {} */
+
+.cell-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+    line-height: 56px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.cell-value.user-filled {
+    color: #1976d2;
+}
+
+.cell-value.static {
+    color: #111;
+}
+
+.candidates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    padding: 2px;
+    gap: 0;
+}
+
+.candidates-grid .cand-num {
+    font-size: 10px;
+    color: #777;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.candidates-grid .cand-num.visible {
+    color: #555;
+    font-weight: 500;
+}
+
+.candidates-grid .cand-num.hidden {
+    color: transparent;
+}
+
+.candidates-grid .cand-num.conflict {
+    color: #e53935 !important;
+    font-weight: 700;
+}
+
+.completion-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: opacity 0.2s;
+}
+.completion-overlay.hidden {
+    display: none;
+}
+.completion-overlay .congrats-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+.completion-overlay .click-hint {
+    font-size: 1rem;
+    color: #555;
+}
+
+#ControlPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 220px;
+    align-items: stretch;
+}
+
+.control-section {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid #e8e8e8;
+}
+
+.control-section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#modeIndicator {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 2px solid #1976d2;
+    background: #e3f2fd;
+    color: #1976d2;
+    width: 100%;
+}
+
+#modeIndicator.candidate-mode {
+    border-color: #f57c00;
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+#numberButtons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 240px;
+    margin: 0 auto;
+}
+
+#numberButtons button {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    font-size: 22px;
+    font-weight: 700;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+}
+
+#numberButtons button:hover:not(:disabled) {
+    background: #e3f2fd;
+    border-color: #1976d2;
+    color: #1976d2;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(25,118,210,0.25);
+}
+
+#numberButtons button:active:not(:disabled) {
+    transform: scale(0.95);
+    background: #bbdefb;
+}
+
+#numberButtons button:disabled {
+    background: #eeeeee;
+    border-color: #dddddd;
+    color: #bbbbbb;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#numberButtons button.candidate-active {
+    border-color: #f57c00;
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.game-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.15s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.btn-primary {
+    background: #1976d2;
+    color: #fff;
+}
+.btn-primary:hover {
+    background: #1565c0;
+    box-shadow: 0 2px 8px rgba(25,118,210,0.3);
+}
+
+.btn-auto {
+    background: #2e7d32;
+    color: #fff;
+}
+.btn-auto:hover {
+    background: #1b5e20;
+    box-shadow: 0 2px 8px rgba(46,125,50,0.3);
+}
+
+.btn-outline {
+    background: #fff;
+    color: #555;
+    border: 2px solid #ddd;
+}
+.btn-outline:hover {
+    border-color: #999;
+    background: #f5f5f5;
+}
+
+.game-btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.game-btn-group .game-btn {
+    flex: 1;
+    min-width: 70px;
+}
+
+#difficulty {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 2px solid #ddd;
+    font-size: 14px;
+    font-weight: 500;
+    background: #fff;
+    cursor: pointer;
+}
+
+#messageArea {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    min-height: 20px;
+    padding: 4px 0;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+#messageArea.success { color: #2e7d32; }
+#messageArea.error { color: #c62828; }
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+}
+.radio-group label {
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.radio-group input[type="radio"] {
+    accent-color: #1976d2;
+}
+
+@media (max-width: 750px) {
+    #Content { flex-direction: column; align-items: center; gap: 20px; }
+    .boardCell { width: 40px; height: 40px; }
+    .cell-value { font-size: 18px; line-height: 40px; }
+    .candidates-grid .cand-num { font-size: 7px; }
+    #ControlPanel { width: 100%; max-width: 420px; }
+    #numberButtons { max-width: 200px; gap: 5px; }
+    #numberButtons button { font-size: 18px; min-height: 42px; }
+}

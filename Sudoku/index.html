@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数独 Sudoku</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="Wrapper">
+        <div id="Main">
+            <h1 id="PageTitle">🧩 数独 Sudoku</h1>
+            <div id="Content">
+                <div class="board-container">
+                    <div id="sudokuBoard"></div>
+                    <div id="completionOverlay" class="completion-overlay hidden">
+                        <div class="congrats-text">🎉 恭喜完成！</div>
+                        <div class="click-hint">点击此处查看盘面</div>
+                    </div>
+                </div>
+
+                <div id="ControlPanel">
+                    <div class="control-section" style="text-align:center;">
+                        <div id="modeIndicator" title="点击切换填入/候选模式">✏️ 填入模式</div>
+                        <div style="font-size:11px;color:#999;margin-top:4px;">点击切换：填入数字 / 标记候选数</div>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🔢 数字按钮</h3>
+                        <div id="numberButtons">
+                            <button data-num="1">1</button>
+                            <button data-num="2">2</button>
+                            <button data-num="3">3</button>
+                            <button data-num="4">4</button>
+                            <button data-num="5">5</button>
+                            <button data-num="6">6</button>
+                            <button data-num="7">7</button>
+                            <button data-num="8">8</button>
+                            <button data-num="9">9</button>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>⚡ 操作</h3>
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <div class="game-btn-group">
+                                <button id="autoCandidateBtn" class="game-btn btn-auto">🤖 自动候选数</button>
+                            </div>
+                            <div class="game-btn-group">
+                                <button id="clearCellBtn" class="game-btn btn-outline">🗑 清除格子</button>
+                                <button id="clearAllCandidatesBtn" class="game-btn btn-outline">🧹 清除候选</button>
+                            </div>
+                            <div class="game-btn-group">
+                                <button id="checkBtn" class="game-btn btn-primary">✓ 检查</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🎲 新游戏</h3>
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <label for="difficulty" style="font-size:13px;font-weight:500;">难度选择：</label>
+                            <select id="difficulty">
+                                <option value="easy">简单</option>
+                                <option value="medium" selected>中等</option>
+                                <option value="hard">困难</option>
+                                <option value="expert">专家</option>
+                                <option value="insane">疯狂</option>
+                            </select>
+                            <button id="newGameBtn" class="game-btn btn-primary">🔄 新游戏</button>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>🔍 排除辅助</h3>
+                        <div class="radio-group" id="assistRadioGroup">
+                            <label><input type="radio" name="assistMode" value="none"> 无</label>
+                            <label><input type="radio" name="assistMode" value="cell"> 当前格</label>
+                            <label><input type="radio" name="assistMode" value="full" checked> 整个盘面</label>
+                        </div>
+                    </div>
+
+                    <div id="messageArea"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

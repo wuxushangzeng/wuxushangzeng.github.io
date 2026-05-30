@@ -1,0 +1,2387 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LapLacan&apos;s Blog</title><description>LapLacan</description><link>https://wuxushangzeng.github.io/</link><language>zh_CN</language><item><title>MySQL 查询命令速查</title><link>https://wuxushangzeng.github.io/posts/mysql/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/mysql/</guid><description>MySQL 查询命令速查</description><pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;一、基础查询&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;-- 查询所有列
+SELECT * FROM employees;
+
+-- 查询指定列，使用别名
+SELECT 
+    emp_id    AS &quot;员工ID&quot;,
+    emp_name  AS &quot;姓名&quot;,
+    salary    AS &quot;薪资&quot;
+FROM employees;
+
+-- 去重
+SELECT DISTINCT department FROM employees;
+
+-- 排序（默认 ASC）
+SELECT * FROM employees ORDER BY salary DESC, hire_date ASC;
+
+-- 分页 (MySQL 语法)
+SELECT * FROM employees LIMIT 5 OFFSET 10;   -- 跳过前 10 行，取 5 行
+SELECT * FROM employees LIMIT 10, 5;          -- 等效写法
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;二、条件过滤&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;-- 比较运算符：=  &amp;lt;&amp;gt;  !=  &amp;gt;  &amp;gt;=  &amp;lt;  &amp;lt;=
+SELECT * FROM employees WHERE salary &amp;gt; 8000;
+
+-- BETWEEN (闭区间)
+SELECT * FROM employees WHERE salary BETWEEN 5000 AND 10000;
+
+-- IN / NOT IN
+SELECT * FROM employees WHERE department IN (&apos;IT&apos;, &apos;Finance&apos;);
+
+-- LIKE 模糊匹配  (% 任意多字符，_ 单个字符)
+SELECT * FROM employees WHERE emp_name LIKE &apos;张%&apos;;   -- 以&quot;张&quot;开头
+SELECT * FROM employees WHERE emp_name LIKE &apos;__&apos;;     -- 两个字的名字
+
+-- NULL 判断 (不能用 = NULL)
+SELECT * FROM employees WHERE bonus IS NULL;
+SELECT * FROM employees WHERE bonus IS NOT NULL;
+
+-- 逻辑运算 AND / OR / NOT
+SELECT * FROM employees 
+WHERE department = &apos;IT&apos; AND (salary &amp;gt; 10000 OR bonus &amp;gt; 5000);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;三、聚合与分组&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;-- 聚合函数
+SELECT 
+    COUNT(*)           AS 总人数,        -- 计数（含重复和NULL）
+    COUNT(emp_id)      AS 有ID的人数,
+    COUNT(DISTINCT dept) AS 部门数,
+    SUM(salary)        AS 工资总和,
+    AVG(salary)        AS 平均工资,
+    MAX(salary)        AS 最高工资,
+    MIN(salary)        AS 最低工资
+FROM employees;
+
+-- GROUP BY 分组
+SELECT 
+    department,
+    COUNT(*)   AS 人数,
+    AVG(salary) AS 平均薪资
+FROM employees
+GROUP BY department;
+
+-- HAVING 过滤分组结果（WHERE 在分组前，HAVING 在分组后）
+SELECT 
+    department,
+    AVG(salary) AS avg_sal
+FROM employees
+WHERE hire_date &amp;gt; &apos;2020-01-01&apos;      -- 先过滤行
+GROUP BY department
+HAVING AVG(salary) &amp;gt; 8000            -- 再过滤分组
+ORDER BY avg_sal DESC;
+
+-- SQL 执行顺序：
+-- FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;四、连接 (JOIN)&lt;/h2&gt;
+&lt;p&gt;假设有两张表：&lt;code&gt;employees&lt;/code&gt; (员工) 和 &lt;code&gt;departments&lt;/code&gt; (部门)，通过 &lt;code&gt;dept_id&lt;/code&gt; 关联。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-- INNER JOIN（交集）：两表都匹配的行
+SELECT e.emp_name, d.dept_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id;
+
+-- LEFT JOIN：左表全部保留，右表无匹配填 NULL
+SELECT e.emp_name, d.dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id;
+
+-- RIGHT JOIN：右表全部保留
+SELECT e.emp_name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;
+
+-- CROSS JOIN（笛卡尔积）：慎用
+SELECT * FROM employees CROSS JOIN departments;
+
+-- 多表连接
+SELECT e.emp_name, d.dept_name, p.project_name
+FROM employees e
+JOIN departments d ON e.dept_id = d.dept_id
+LEFT JOIN projects p   ON e.emp_id  = p.emp_id;
+
+-- 自连接：同一张表自己做连接
+-- 例：查询每个员工的上级姓名
+SELECT e1.emp_name AS 员工, e2.emp_name AS 上级
+FROM employees e1
+LEFT JOIN employees e2 ON e1.manager_id = e2.emp_id;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;连接类型&lt;/th&gt;
+&lt;th&gt;结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;INNER JOIN&lt;/td&gt;
+&lt;td&gt;两表都匹配的行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LEFT JOIN&lt;/td&gt;
+&lt;td&gt;左表全保留，右表不匹配填 NULL&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RIGHT JOIN&lt;/td&gt;
+&lt;td&gt;右表全保留，左表不匹配填 NULL&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;FULL JOIN&lt;/td&gt;
+&lt;td&gt;两表全保留（MySQL 不支持，用 UNION 模拟）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;五、子查询&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;-- 标量子查询（返回单个值）
+-- 查询薪资高于平均薪资的员工
+SELECT * FROM employees
+WHERE salary &amp;gt; (SELECT AVG(salary) FROM employees);
+
+-- 多值子查询 IN / ANY / ALL
+-- 查询在&quot;有奖金记录的部门&quot;中工作的员工
+SELECT * FROM employees
+WHERE dept_id IN (
+    SELECT DISTINCT dept_id FROM employees WHERE bonus IS NOT NULL
+);
+
+-- ANY：大于子查询结果中的任意一个即可
+SELECT * FROM employees 
+WHERE salary &amp;gt; ANY (SELECT salary FROM employees WHERE dept_id = 1);
+
+-- ALL：大于子查询结果中的所有值
+SELECT * FROM employees 
+WHERE salary &amp;gt; ALL (SELECT salary FROM employees WHERE dept_id = 1);
+
+-- FROM 子查询（派生表）：子查询结果当作一张临时表
+SELECT dept_id, avg_sal
+FROM (
+    SELECT dept_id, AVG(salary) AS avg_sal
+    FROM employees
+    GROUP BY dept_id
+) AS dept_avg
+WHERE avg_sal &amp;gt; 8000;
+
+-- EXISTS / NOT EXISTS（相关子查询）
+-- 查询&quot;有下属&quot;的员工（至少有一个员工的 manager_id 指向他）
+SELECT * FROM employees e1
+WHERE EXISTS (
+    SELECT 1 FROM employees e2 WHERE e2.manager_id = e1.emp_id
+);
+
+-- 查询&quot;没有下属&quot;的员工
+SELECT * FROM employees e1
+WHERE NOT EXISTS (
+    SELECT 1 FROM employees e2 WHERE e2.manager_id = e1.emp_id
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;六、窗口函数&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;函数名([参数]) OVER (
+    [PARTITION BY 列,...]   -- 分组
+    [ORDER BY 列 [ASC|DESC],...]  -- 排序
+    [ROWS|RANGE 帧定义]     -- 窗口范围（可选）
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;6.1 排名函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- ROW_NUMBER：连续排名，无并列（1,2,3,4,...）
+SELECT 
+    emp_name, department, salary,
+    ROW_NUMBER() OVER (ORDER BY salary DESC) AS row_num
+FROM employees;
+
+-- RANK：有并列，跳号（1,1,3,4,...）
+SELECT 
+    emp_name, department, salary,
+    RANK() OVER (ORDER BY salary DESC) AS rk
+FROM employees;
+
+-- DENSE_RANK：有并列，不跳号（1,1,2,3,...）
+SELECT 
+    emp_name, department, salary,
+    DENSE_RANK() OVER (ORDER BY salary DESC) AS dr
+FROM employees;
+
+-- 分组排名：每个部门内按薪资排名
+SELECT 
+    emp_name, department, salary,
+    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank
+FROM employees;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;函数&lt;/th&gt;
+&lt;th&gt;并列处理&lt;/th&gt;
+&lt;th&gt;后续编号&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ROW_NUMBER&lt;/td&gt;
+&lt;td&gt;不并列，严格递增&lt;/td&gt;
+&lt;td&gt;1, 2, 3, 4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RANK&lt;/td&gt;
+&lt;td&gt;值相同则并列&lt;/td&gt;
+&lt;td&gt;1, 1, 3, 4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DENSE_RANK&lt;/td&gt;
+&lt;td&gt;值相同则并列&lt;/td&gt;
+&lt;td&gt;1, 1, 2, 3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;6.2 偏移函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- LAG：向上偏移（取前一行）
+SELECT 
+    order_date,
+    amount,
+    LAG(amount, 1)   OVER (ORDER BY order_date) AS prev_amount,   -- 前一天
+    LAG(amount, 2, 0) OVER (ORDER BY order_date) AS two_days_ago   -- 前两天，默认 0
+FROM orders;
+
+-- LEAD：向下偏移（取后一行）
+SELECT 
+    order_date,
+    amount,
+    LEAD(amount, 1) OVER (ORDER BY order_date) AS next_amount
+FROM orders;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;6.3 聚合窗口函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 累计求和 (Running Total)
+SELECT 
+    order_date,
+    amount,
+    SUM(amount) OVER (ORDER BY order_date) AS running_total
+FROM orders;
+
+-- 分组累计求和
+SELECT 
+    order_date,
+    department,
+    amount,
+    SUM(amount) OVER (PARTITION BY department ORDER BY order_date) AS dept_running_total
+FROM orders;
+
+-- 移动平均（前 2 行 + 当前行 + 后 2 行，共 5 行）
+SELECT 
+    order_date,
+    amount,
+    AVG(amount) OVER (ORDER BY order_date ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING) AS moving_avg_5
+FROM orders;
+
+-- 每组内的聚合值
+SELECT 
+    emp_name, department, salary,
+    AVG(salary) OVER (PARTITION BY department) AS dept_avg,
+    MAX(salary) OVER (PARTITION BY department) AS dept_max,
+    salary - AVG(salary) OVER (PARTITION BY department) AS diff_from_avg
+FROM employees;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;6.4 窗口帧定义&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 累积帧（从分区起点到当前行，默认行为）
+ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+
+-- 滑动窗口（前3行 + 当前行）
+ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
+
+-- 前后各1行
+ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING
+
+-- 到分区末尾
+ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;七、索引&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;-- 创建索引（加速查询的核心手段）
+CREATE INDEX idx_name ON employees(emp_name);
+CREATE INDEX idx_dept_salary ON employees(dept_id, salary);   -- 复合索引
+
+-- 查看索引
+SHOW INDEX FROM employees;
+
+-- 删除索引
+DROP INDEX idx_name ON employees;
+
+-- 用 EXPLAIN 分析查询是否走了索引
+EXPLAIN SELECT * FROM employees WHERE emp_name = &apos;张三&apos;;
+-- type=ALL 是全表扫描（不好）
+-- type=ref 或 type=const 是走了索引（好）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;八、常用函数&lt;/h2&gt;
+&lt;h3&gt;字符串函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 拼接
+SELECT CONCAT(last_name, &apos; &apos;, first_name) AS full_name FROM employees;
+SELECT CONCAT_WS(&apos;-&apos;, &apos;2024&apos;, &apos;01&apos;, &apos;15&apos;);              -- &apos;2024-01-15&apos;
+
+-- 子串
+SELECT SUBSTRING(&apos;Hello World&apos;, 1, 5);                   -- &apos;Hello&apos;
+SELECT LEFT(&apos;Hello World&apos;, 5);                            -- &apos;Hello&apos;
+SELECT RIGHT(&apos;Hello World&apos;, 5);                           -- &apos;World&apos;
+
+-- 替换
+SELECT REPLACE(&apos;Hello World&apos;, &apos;World&apos;, &apos;MySQL&apos;);          -- &apos;Hello MySQL&apos;
+
+-- 长度
+SELECT LENGTH(&apos;Hello&apos;);                                    -- 5（字节）
+SELECT CHAR_LENGTH(&apos;你好&apos;);                                -- 2（字符数）
+
+-- 大小写与去空格
+SELECT UPPER(&apos;hello&apos;), LOWER(&apos;HELLO&apos;), TRIM(&apos;  text  &apos;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;日期函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 当前时间
+SELECT NOW(), CURDATE(), CURTIME();
+
+-- 提取日期部分
+SELECT 
+    YEAR(&apos;2024-06-15&apos;)        AS yr,
+    MONTH(&apos;2024-06-15&apos;)       AS mon,
+    DAY(&apos;2024-06-15&apos;)         AS day,
+    DAYOFWEEK(&apos;2024-06-15&apos;)   AS weekday;   -- 1=Sunday
+
+-- 日期格式化
+SELECT DATE_FORMAT(NOW(), &apos;%Y-%m-%d %H:%i:%s&apos;);         -- &apos;2026-05-30 14:30:00&apos;
+SELECT DATE_FORMAT(NOW(), &apos;%Y年%m月%d日&apos;);                -- &apos;2026年05月30日&apos;
+
+-- 日期计算
+SELECT DATEDIFF(&apos;2024-12-31&apos;, &apos;2024-01-01&apos;);             -- 364（日期差）
+SELECT DATE_ADD(&apos;2024-01-01&apos;, INTERVAL 7 DAY);           -- &apos;2024-01-08&apos;
+SELECT DATE_SUB(&apos;2024-01-01&apos;, INTERVAL 1 MONTH);         -- &apos;2023-12-01&apos;
+SELECT TIMESTAMPDIFF(MONTH, &apos;2023-01-01&apos;, &apos;2024-06-01&apos;); -- 17（月差）
+
+-- 日期截断
+SELECT DATE(&apos;2024-06-15 14:30:00&apos;);                      -- &apos;2024-06-15&apos;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;数学与类型转换&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 四舍五入 / 上下取整
+SELECT ROUND(3.14159, 2);      -- 3.14
+SELECT CEIL(3.1), FLOOR(3.9);  -- 4, 3
+SELECT ABS(-5), MOD(10, 3);    -- 5, 1
+
+-- 类型转换
+SELECT CAST(&apos;123&apos; AS SIGNED);
+SELECT CAST(&apos;2024-01-01&apos; AS DATE);
+SELECT CONVERT(150, CHAR);     -- 等效 CAST(150 AS CHAR)
+
+-- IFNULL / COALESCE：空值处理
+SELECT IFNULL(bonus, 0) FROM employees;                       -- bonus 为 NULL 时返回 0
+SELECT COALESCE(phone, email, &apos;无联系方式&apos;) FROM employees;    -- 返回第一个非 NULL
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;条件与流程控制&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- CASE WHEN：条件分支
+SELECT 
+    emp_name,
+    salary,
+    CASE 
+        WHEN salary &amp;lt; 5000  THEN &apos;低薪&apos;
+        WHEN salary &amp;lt; 10000 THEN &apos;中薪&apos;
+        ELSE &apos;高薪&apos;
+    END AS salary_level
+FROM employees;
+
+-- CASE WHEN 配合聚合做交叉/透视
+SELECT department,
+    SUM(CASE WHEN gender = &apos;M&apos; THEN 1 ELSE 0 END) AS 男性,
+    SUM(CASE WHEN gender = &apos;F&apos; THEN 1 ELSE 0 END) AS 女性
+FROM employees
+GROUP BY department;
+
+-- IF 函数（三元表达式）
+SELECT IF(salary &amp;gt; 8000, &apos;高&apos;, &apos;低&apos;) FROM employees;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;九、进阶特性&lt;/h2&gt;
+&lt;h3&gt;9.1 UNION / UNION ALL&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- UNION：合并结果集并去重
+SELECT emp_name FROM employees_2023
+UNION
+SELECT emp_name FROM employees_2024;
+
+-- UNION ALL：合并结果集不去重（更快）
+SELECT emp_name FROM employees_2023
+UNION ALL
+SELECT emp_name FROM employees_2024;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;9.2 CTE（公用表表达式）&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 普通 CTE：把子查询抽出来，可读性更好
+WITH dept_avg AS (
+    SELECT dept_id, AVG(salary) AS avg_sal
+    FROM employees
+    GROUP BY dept_id
+)
+SELECT e.emp_name, e.salary, d.avg_sal
+FROM employees e
+JOIN dept_avg d ON e.dept_id = d.dept_id
+WHERE e.salary &amp;gt; d.avg_sal;
+
+-- 多个 CTE
+WITH 
+    dept_avg AS (
+        SELECT dept_id, AVG(salary) AS avg_sal
+        FROM employees GROUP BY dept_id
+    ),
+    high_paid AS (
+        SELECT * FROM employees WHERE salary &amp;gt; 10000
+    )
+SELECT * FROM high_paid;
+
+-- 递归 CTE（生成连续日期、组织结构树等）
+WITH RECURSIVE dates AS (
+    SELECT &apos;2024-01-01&apos; AS dt
+    UNION ALL
+    SELECT DATE_ADD(dt, INTERVAL 1 DAY) FROM dates WHERE dt &amp;lt; &apos;2024-01-31&apos;
+)
+SELECT * FROM dates;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;9.3 DDL 与 DML 速览&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 建表
+CREATE TABLE users (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email    VARCHAR(100),
+    age      INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 修改表结构
+ALTER TABLE users ADD COLUMN phone VARCHAR(20);
+ALTER TABLE users MODIFY COLUMN age TINYINT;
+ALTER TABLE users DROP COLUMN phone;
+ALTER TABLE users ADD INDEX idx_email(email);
+
+-- 插入
+INSERT INTO users (username, email) VALUES (&apos;zhangsan&apos;, &apos;zhangsan@example.com&apos;);
+INSERT INTO users (username, email) VALUES 
+    (&apos;lisi&apos;, &apos;lisi@example.com&apos;),
+    (&apos;wangwu&apos;, &apos;wangwu@example.com&apos;);
+
+-- 更新 / 删除（务必带 WHERE）
+UPDATE users SET age = 25 WHERE username = &apos;zhangsan&apos;;
+DELETE FROM users WHERE id = 1;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;十、经典题目&lt;/h2&gt;
+&lt;h3&gt;10.1 查询每个部门薪资最高的员工&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 解法1：子查询 + 窗口函数（推荐）
+SELECT emp_name, department, salary
+FROM (
+    SELECT *,
+        RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rk
+    FROM employees
+) t
+WHERE rk = 1;
+
+-- 解法2：相关子查询
+SELECT emp_name, department, salary
+FROM employees e1
+WHERE salary = (
+    SELECT MAX(salary)
+    FROM employees e2
+    WHERE e2.department = e1.department
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;10.2 计算次日留存率&lt;/h3&gt;
+&lt;p&gt;表 &lt;code&gt;login_log&lt;/code&gt;：&lt;code&gt;user_id&lt;/code&gt;, &lt;code&gt;login_date&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;WITH first_login AS (
+    -- 每个用户的首次登录日期
+    SELECT user_id, MIN(login_date) AS first_date
+    FROM login_log
+    GROUP BY user_id
+),
+retention AS (
+    -- 次日是否还登录了
+    SELECT 
+        f.first_date,
+        COUNT(DISTINCT f.user_id) AS total_users,
+        COUNT(DISTINCT l.user_id) AS retained_users
+    FROM first_login f
+    LEFT JOIN login_log l 
+        ON f.user_id = l.user_id 
+        AND l.login_date = DATE_ADD(f.first_date, INTERVAL 1 DAY)
+    GROUP BY f.first_date
+)
+SELECT 
+    first_date,
+    total_users,
+    retained_users,
+    ROUND(retained_users / total_users * 100, 2) AS retention_pct
+FROM retention
+ORDER BY first_date;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;10.3 连续登录 N 天&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 用 SQL 查询连续登录 3 天及以上的用户
+WITH ranked AS (
+    SELECT 
+        user_id,
+        login_date,
+        ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_date) AS rn
+    FROM login_log
+    GROUP BY user_id, login_date   -- 一天多次登录去重
+),
+diff_group AS (
+    SELECT 
+        user_id,
+        login_date,
+        DATE_SUB(login_date, INTERVAL rn DAY) AS grp   -- 连续日期的分组标志
+    FROM ranked
+)
+SELECT user_id, COUNT(*) AS consecutive_days
+FROM diff_group
+GROUP BY user_id, grp
+HAVING COUNT(*) &amp;gt;= 3;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;10.4 累计求和&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 方案1：窗口函数（简单直接）
+SELECT 
+    order_date,
+    amount,
+    SUM(amount) OVER (ORDER BY order_date) AS running_total
+FROM orders;
+
+-- 方案2：自连接（理解原理）
+SELECT 
+    o1.order_date,
+    o1.amount,
+    SUM(o2.amount) AS running_total
+FROM orders o1
+JOIN orders o2 ON o2.order_date &amp;lt;= o1.order_date
+GROUP BY o1.order_date, o1.amount
+ORDER BY o1.order_date;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;10.5 求中位数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;-- 窗口函数方法
+WITH numbered AS (
+    SELECT 
+        salary,
+        ROW_NUMBER() OVER (ORDER BY salary) AS rn,
+        COUNT(*) OVER () AS total
+    FROM employees
+)
+SELECT AVG(salary) AS median
+FROM numbered
+WHERE rn IN (FLOOR((total + 1) / 2), CEIL((total + 1) / 2));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;十一、参考链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/8.4/en/sql-statements.html&quot;&gt;MySQL 8.4 Reference Manual — SQL Statements&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/8.4/en/functions.html&quot;&gt;MySQL 8.4 Reference Manual — Functions and Operators&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/8.4/en/window-functions.html&quot;&gt;MySQL 8.4 Reference Manual — Window Functions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/8.4/en/tutorial.html&quot;&gt;MySQL 8.4 Reference Manual — Tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.nowcoder.com/exam/oj&quot;&gt;牛客网 SQL 实战&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://leetcode.com/problemset/database/&quot;&gt;LeetCode Database&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>Vim 常用命令总结</title><link>https://wuxushangzeng.github.io/posts/archlinux-guide/vim/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/archlinux-guide/vim/</guid><description>Vim 常用命令总结</description><pubDate>Thu, 28 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;主目录：&lt;a href=&quot;/posts/archlinux-guide/&quot;&gt;返回主目录&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;这里包含了常用的Vim命令，忘了随时来找。&lt;/p&gt;
+&lt;h2&gt;光标移动类命令&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;k&lt;/code&gt; 向上移动光标 &amp;lt;br&amp;gt;
+&lt;code&gt;j&lt;/code&gt; 向下移动光标 &amp;lt;br&amp;gt;
+&lt;code&gt;h&lt;/code&gt; 向左移动光标 &amp;lt;br&amp;gt;
+&lt;code&gt;l&lt;/code&gt; 向右移动光标 &amp;lt;br&amp;gt;
+前面加数字可以移动多位&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;w&lt;/code&gt; 将光标向后移动一个单词（词首） &amp;lt;br&amp;gt;
+&lt;code&gt;e&lt;/code&gt; 将光标向后移动一个单词（词尾） &amp;lt;br&amp;gt;
+&lt;code&gt;b&lt;/code&gt; 将光标向前移动一个单词 &amp;lt;br&amp;gt;
+前面加数字可以移动多位&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;0&lt;/code&gt; 将光标移动到行首 &amp;lt;br&amp;gt;
+&lt;code&gt;$&lt;/code&gt; 将光标移动到行尾&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;gg&lt;/code&gt; 将光标移动到文件第一行 &amp;lt;br&amp;gt;
+&lt;code&gt;G&lt;/code&gt; 将光标移动到文件最后一行&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+d&lt;/code&gt; 向下翻页 &amp;lt;br&amp;gt;
+&lt;code&gt;Ctrl+u&lt;/code&gt; 向上翻页&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;文本编辑类命令&lt;/h2&gt;
+&lt;h3&gt;插入文本&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;i&lt;/code&gt; 在光标首插入 &amp;lt;br&amp;gt;
+&lt;code&gt;a&lt;/code&gt; 在光标尾插入 &amp;lt;br&amp;gt;
+&lt;code&gt;I&lt;/code&gt; 在行首插入 &amp;lt;br&amp;gt;
+&lt;code&gt;A&lt;/code&gt; 在行尾插入&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;p&lt;/code&gt; 插入复制/剪切的文本 &amp;lt;br&amp;gt;
+普通复制/剪切会直接在光标后插入 &amp;lt;br&amp;gt;
+整行复制/剪切新建一行插入（&lt;code&gt;P&lt;/code&gt; 可以在上一行插入）&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;o&lt;/code&gt; 在光标所在行下方打开新的一行并进入插入模式 &amp;lt;br&amp;gt;
+&lt;code&gt;O&lt;/code&gt; 在光标所在行上方打开新的一行并进入插入模式&lt;/p&gt;
+&lt;h3&gt;修改文本&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;r&lt;/code&gt; 替换字符 &amp;lt;br&amp;gt;
+&lt;code&gt;R&lt;/code&gt; 相当于Ins模式&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;c&lt;/code&gt;+&lt;code&gt;w&lt;/code&gt;/&lt;code&gt;e&lt;/code&gt;/&lt;code&gt;$&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;剪切/删除文本&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;x&lt;/code&gt; 剪切当前字符&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;d&lt;/code&gt; 用于剪切选中，下面是无选中时的搭配按键：&amp;lt;br&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;+&lt;code&gt;w&lt;/code&gt; 从当前光标当前位置直到下一个单词起始处，不包括它的第一个字符。也可以 &lt;code&gt;w&lt;/code&gt; 前面加数字。&amp;lt;br&amp;gt;&lt;/li&gt;
+&lt;li&gt;+&lt;code&gt;e&lt;/code&gt; 从当前光标当前位置直到单词末尾，包括最后一个字符。也可以 &lt;code&gt;e&lt;/code&gt; 前面加数字。&amp;lt;br&amp;gt;&lt;/li&gt;
+&lt;li&gt;+&lt;code&gt;$&lt;/code&gt; 从当前光标到行末。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;v 模式下选中文本后按 &lt;code&gt;d&lt;/code&gt; 可以剪切&lt;/p&gt;
+&lt;p&gt;事实上，使用 &lt;code&gt;c&lt;/code&gt; 也可以进行剪切，不过会直接进入插入模式。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;dd&lt;/code&gt; 剪切当前行，前面可以加数字。&amp;lt;br&amp;gt;
+&lt;code&gt;d&lt;/code&gt;+number+&lt;code&gt;j&lt;/code&gt;/&lt;code&gt;k&lt;/code&gt; 也可以剪切行。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;查找替换类命令&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;/your text&lt;/code&gt;+&lt;code&gt;Enter&lt;/code&gt; 查找，&lt;code&gt;n&lt;/code&gt; 跳到下一个匹配项，&lt;code&gt;N&lt;/code&gt; 跳到上一个匹配项。&lt;/p&gt;
+&lt;p&gt;在一行内替换头一个字符串 old 为新的字符串 new，请输入  &lt;code&gt;:s/old/new&lt;/code&gt; &amp;lt;br&amp;gt;
+在一行内替换所有的字符串 old 为新的字符串 new，请输入  &lt;code&gt;:s/old/new/g&lt;/code&gt; &amp;lt;br&amp;gt;
+在两行内替换所有的字符串 old 为新的字符串 new，请输入  &lt;code&gt;:#,#s/old/new/g&lt;/code&gt; &amp;lt;br&amp;gt;
+在文件内替换所有的字符串 old 为新的字符串 new，请输入  &lt;code&gt;:%s/old/new/g&lt;/code&gt; &amp;lt;br&amp;gt;
+进行全文替换时询问用户确认每个替换需添加 c 标志        &lt;code&gt;:%s/old/new/gc&lt;/code&gt; &amp;lt;br&amp;gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;补充命令&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;:q&lt;/code&gt; 退出 &amp;lt;br&amp;gt;
+&lt;code&gt;:q!&lt;/code&gt; 不保存强制退出 &amp;lt;br&amp;gt;
+&lt;code&gt;:w&lt;/code&gt; 保存 &amp;lt;br&amp;gt;
+&lt;code&gt;:wq&lt;/code&gt; 保存并退出&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;u&lt;/code&gt; 撤销 &amp;lt;br&amp;gt;
+&lt;code&gt;Ctrl+r&lt;/code&gt; 恢复&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;%&lt;/code&gt; 匹配括号&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;y&lt;/code&gt; 复制选中文本 &amp;lt;br&amp;gt;
+&lt;code&gt;yy&lt;/code&gt; 复制当前行 &amp;lt;br&amp;gt;
+&lt;code&gt;y&lt;/code&gt;+number+&lt;code&gt;j&lt;/code&gt;/&lt;code&gt;k&lt;/code&gt; 也很好用&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+w+h/j/k/l&lt;/code&gt; 切换窗口&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;VSCode中Vim模式的配置&lt;/h2&gt;
+&lt;p&gt;安装Vim插件后使用命令 &lt;code&gt;:set relativenumber&lt;/code&gt; 显示相对行号（VSCode已经默认选择开启绝对行号 &lt;code&gt;:set number&lt;/code&gt;）&lt;/p&gt;
+&lt;p&gt;为了关闭一些烦人的黄线警告，工作区根目录下新建 &lt;code&gt;./vscode/settings.json&lt;/code&gt;，然后写入：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;markdownlint.config&quot;: {
+    // 忽略&quot;必须以一级标题开头&quot;的规则 (MD041)[reference:3]
+    &quot;MD041&quot;: false,
+    // 忽略&quot;禁止内联HTML&quot;的规则 (MD033)[reference:4]
+    &quot;MD033&quot;: false,
+    // 或者，只为MD033指定一个允许使用的HTML元素列表[reference:5]
+    // &quot;MD033&quot;: {
+    //   &quot;allowed_elements&quot;: [&quot;details&quot;, &quot;summary&quot;, &quot;div&quot;]
+    // }
+    // 忽略规则MD012
+    &quot;MD012&quot;: false,
+    &quot;MD040&quot;: false
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可以随时添加要忽略的项目。&lt;/p&gt;
+&lt;p&gt;还需要配置一下Vim插件的设置，打开Vim插件的设置界面，搜索 &lt;code&gt;insert mode key bindings&lt;/code&gt;，找到设置，插入以下内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&quot;vim.insertModeKeyBindings&quot;: [
+    {
+      &quot;before&quot;: [&quot;j&quot;, &quot;k&quot;],
+      &quot;after&quot;: [&quot;&amp;lt;Esc&amp;gt;&quot;]
+    }
+  ]
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Arch Linux</title><link>https://wuxushangzeng.github.io/posts/archlinux-guide/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/archlinux-guide/</guid><description>Arch Linux 安装备忘和使用技巧</description><pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;strong&gt;设备&lt;/strong&gt;：ThinkPad X1 Carbon Gen 6&lt;/p&gt;
+&lt;p&gt;这篇主要是为了记录我的 Arch Linux 安装过程，以下的内容来自&lt;/p&gt;
+&lt;p&gt;::github{repo=&quot;SHORiN-KiWATA/Shorin-ArchLinux-Guide&quot;}
+&amp;lt;br&amp;gt;&lt;/p&gt;
+&lt;h1&gt;主目录&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;./before-install-arch/&quot;&gt;安装 Arch Linux 前的准备工作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./install-arch/&quot;&gt;安装 Arch Linux&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./before-desktop/&quot;&gt;安装桌面环境前的准备&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./graphic/&quot;&gt;显卡驱动和硬件编解码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./snapper/&quot;&gt;快照和系统维护&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./niri/&quot;&gt;安装 Niri&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./software/&quot;&gt;软件安装相关&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./vim/&quot;&gt;Vim 常用命令总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>LATEX 速查</title><link>https://wuxushangzeng.github.io/posts/latex-guide/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/latex-guide/</guid><description>LATEX 备忘</description><pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;一、基本运算符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;加法&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;+&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$+$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;减法&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;-&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$-$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;乘法&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\times&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\times$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;点乘&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cdot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cdot$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;除法&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\div&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\div$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;分数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\frac{a}{b}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\frac{a}{b}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;平方&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;a^2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$a^2$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;开方&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sqrt{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\sqrt{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;n 次方根&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sqrt[n]{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\sqrt[n]{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;加减号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\pm&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\pm$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;减加号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mp&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mp$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;二、关系符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;=&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$=$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\neq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\neq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;大于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$&amp;gt;$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;小于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$&amp;lt;$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;大于等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\geq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\geq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;小于等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\leq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\leq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;约等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\approx&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\approx$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;恒等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\equiv&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\equiv$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;正比于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\propto&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\propto$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;相似于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sim&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\sim$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;全等于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cong&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cong$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;远大于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\gg&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\gg$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;远小于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ll&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ll$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;定义为&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\triangleq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\triangleq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;等价于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\doteq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\doteq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不等于（另一种）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ne&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ne$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;三、集合符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;属于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\in&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\in$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不属于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\notin&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\notin$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;包含于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\subset&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\subset$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;包含&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\supset&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\supset$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;子集（含等号）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\subseteq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\subseteq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;真包含（含等号）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\supseteq&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\supseteq$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不包含于&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\not\subset&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\not\subset$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;空集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\emptyset&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\emptyset$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;空集（变体）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\varnothing&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\varnothing$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;并集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cup&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cup$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;交集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cap&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cap$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;大并集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bigcup&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bigcup$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;大交集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bigcap&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bigcap$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;补集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\complement&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\complement$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;集合差&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\setminus&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\setminus$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;常用数集&lt;/strong&gt;（需加 &lt;code&gt;\mathbb&lt;/code&gt;）：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;实数集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{R}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{R}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;自然数集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{N}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{N}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;整数集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{Z}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{Z}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;有理数集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{Q}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{Q}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;复数集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{C}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{C}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;素数集&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{P}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{P}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;四、逻辑符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;且（与）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\land&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\land$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;或&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\lor&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\lor$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;非&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\neg&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\neg$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;蕴含（推出）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Rightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Rightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;被蕴含&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Leftarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Leftarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;等价（双向）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Leftrightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Leftrightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;任意（全称量词）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\forall&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\forall$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;存在（存在量词）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\exists&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\exists$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不存在&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nexists&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nexists$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;因为&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\because&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\because$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;所以&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\therefore&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\therefore$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;五、箭头符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;右箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\rightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\rightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;左箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\leftarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\leftarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;双向箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\leftrightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\leftrightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;长右箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\longrightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\longrightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;长左箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\longleftarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\longleftarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\uparrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\uparrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\downarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\downarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;映射到&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mapsto&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mapsto$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;长映射到&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\longmapsto&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\longmapsto$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;双线右箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Rightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Rightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;双线双向&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Leftrightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Leftrightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;右钩箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\hookrightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\hookrightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;左钩箭头&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\hookleftarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\hookleftarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;右箭（单射用）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\rightarrowtail&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\rightarrowtail$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;两个箭头（双射）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\twoheadrightarrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\twoheadrightarrow$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;六、希腊字母&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;名称&lt;/th&gt;
+&lt;th&gt;小写&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;大写&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;阿尔法&lt;/td&gt;
+&lt;td&gt;$\alpha$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\alpha&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$A$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;A&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;贝塔&lt;/td&gt;
+&lt;td&gt;$\beta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\beta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$B$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;B&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;伽马&lt;/td&gt;
+&lt;td&gt;$\gamma$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\gamma&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Gamma$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Gamma&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;德尔塔&lt;/td&gt;
+&lt;td&gt;$\delta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\delta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Delta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Delta&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;伊普西隆&lt;/td&gt;
+&lt;td&gt;$\epsilon$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\epsilon&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$E$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;E&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;伊普西隆（变体）&lt;/td&gt;
+&lt;td&gt;$\varepsilon$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\varepsilon&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;泽塔&lt;/td&gt;
+&lt;td&gt;$\zeta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\zeta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$Z$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Z&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;伊塔&lt;/td&gt;
+&lt;td&gt;$\eta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\eta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$H$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;H&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;西塔&lt;/td&gt;
+&lt;td&gt;$\theta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\theta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Theta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Theta&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;西塔（变体）&lt;/td&gt;
+&lt;td&gt;$\vartheta$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\vartheta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;约塔&lt;/td&gt;
+&lt;td&gt;$\iota$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\iota&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$I$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;I&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;卡帕&lt;/td&gt;
+&lt;td&gt;$\kappa$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\kappa&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$K$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;K&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;兰布达&lt;/td&gt;
+&lt;td&gt;$\lambda$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\lambda&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Lambda$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Lambda&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;缪&lt;/td&gt;
+&lt;td&gt;$\mu$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mu&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$M$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;M&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;纽&lt;/td&gt;
+&lt;td&gt;$\nu$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nu&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$N$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;N&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;克西&lt;/td&gt;
+&lt;td&gt;$\xi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\xi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Xi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Xi&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;欧米克隆&lt;/td&gt;
+&lt;td&gt;$o$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;o&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$O$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;O&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;派&lt;/td&gt;
+&lt;td&gt;$\pi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\pi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Pi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Pi&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;派（变体）&lt;/td&gt;
+&lt;td&gt;$\varpi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\varpi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;柔&lt;/td&gt;
+&lt;td&gt;$\rho$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\rho&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$P$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;P&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;柔（变体）&lt;/td&gt;
+&lt;td&gt;$\varrho$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\varrho&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;西格玛&lt;/td&gt;
+&lt;td&gt;$\sigma$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sigma&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Sigma$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Sigma&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;西格玛（末尾）&lt;/td&gt;
+&lt;td&gt;$\varsigma$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\varsigma&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;陶&lt;/td&gt;
+&lt;td&gt;$\tau$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\tau&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$T$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;T&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;宇普西隆&lt;/td&gt;
+&lt;td&gt;$\upsilon$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\upsilon&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Upsilon$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Upsilon&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;斐&lt;/td&gt;
+&lt;td&gt;$\phi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\phi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Phi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Phi&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;斐（变体）&lt;/td&gt;
+&lt;td&gt;$\varphi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\varphi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;凯&lt;/td&gt;
+&lt;td&gt;$\chi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\chi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$X$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;X&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;普赛&lt;/td&gt;
+&lt;td&gt;$\psi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\psi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Psi$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Psi&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;欧米伽&lt;/td&gt;
+&lt;td&gt;$\omega$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\omega&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Omega$&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Omega&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;七、上下标与组合&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;上标&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;x^2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$x^2$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下标&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;x_1&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$x_1$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;正下方下标&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathop{\sup}\limits_{x\in X}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathop{\sup}\limits_{x\in X} f(x)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;同时上下标&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;x_1^2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$x_1^2$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上标分组&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;x^{10}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$x^{10}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下标分组&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;x_{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$x_{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上下标同时分组&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;x_{ij}^{k}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$x_{ij}^{k}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;^ 符号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\hat{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\hat{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;波浪线&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\tilde{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\tilde{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上横线&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bar{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bar{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;点（导数）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\dot{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\dot{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;双点（二阶导）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ddot{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ddot{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上箭头（向量）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\vec{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\vec{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\overline{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\overline{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\underline{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\underline{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上大括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\overbrace{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\overbrace{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下大括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\underbrace{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\underbrace{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;八、求和、积分与极限&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;求和&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sum_{i=1}^{n} i&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\sum_{i=1}^{n} i$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;连乘&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\prod_{i=1}^{n} i&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\prod_{i=1}^{n} i$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;余积&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\coprod&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\coprod$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\int_{a}^{b} f(x) dx&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\int_{a}^{b} f(x) dx$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;二重积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\iint_D f dA&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\iint_D f dA$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;三重积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\iiint_V f dV&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\iiint_V f dV$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;曲线积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\oint&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\oint$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;极限&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\lim\limits_{x \to 0} \frac{\sin x}{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\lim\limits_{x \to 0} \frac{\sin x}{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上极限&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\limsup&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\limsup$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下极限&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\liminf&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\liminf$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;最大值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\max&lt;/code&gt;, &lt;code&gt;\mathop{\max}\limits_{x\in X}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathop{\max}\limits_{x\in X}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;最小值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\min&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\min$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上确界&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sup&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\sup$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;下确界&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\inf&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\inf$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;模&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mod&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mod{}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;同余&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\pmod{n}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\pmod{n}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;九、矩阵与行列式&lt;/h2&gt;
+&lt;h3&gt;矩阵&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{pmatrix}
+a &amp;amp; b \\
+c &amp;amp; d
+\end{pmatrix}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;效果：
+$$
+\begin{pmatrix}
+a &amp;amp; b \
+c &amp;amp; d
+\end{pmatrix}
+$$&lt;/p&gt;
+&lt;h3&gt;方括号矩阵&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{bmatrix}
+a &amp;amp; b \\
+c &amp;amp; d
+\end{bmatrix}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;效果：
+$$
+\begin{bmatrix}
+a &amp;amp; b \
+c &amp;amp; d
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h3&gt;行列式&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{vmatrix}
+a &amp;amp; b \\
+c &amp;amp; d
+\end{vmatrix}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;效果：
+$$
+\begin{vmatrix}
+a &amp;amp; b \
+c &amp;amp; d
+\end{vmatrix}
+$$&lt;/p&gt;
+&lt;h3&gt;大括号矩阵&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{Bmatrix}
+a &amp;amp; b \\
+c &amp;amp; d
+\end{Bmatrix}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;多行矩阵（省略号）&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{pmatrix}
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1n} \\
+a_{21} &amp;amp; a_{22} &amp;amp; \cdots &amp;amp; a_{2n} \\
+\vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+a_{m1} &amp;amp; a_{m2} &amp;amp; \cdots &amp;amp; a_{mn}
+\end{pmatrix}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十、括号与分隔符&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;小括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;(a+b)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$(a+b)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;中括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[a+b]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$[a+b]$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;大括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\{a+b\}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;${a+b}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;自适应括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\left( ... \right)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\left( \frac{a}{b} \right)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;绝对值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;|x|&lt;/code&gt; or &lt;code&gt;\vert x\vert&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\vert x\vert$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;双竖线（范数）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Vert x\Vert&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$|x|$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;取整&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\lfloor x \rfloor&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\lfloor x \rfloor$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;上取整&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\lceil x \rceil&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\lceil x \rceil$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;角括号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\langle x \rangle&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\langle x \rangle$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十一、常用特殊符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;无穷&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\infty&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\infty$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;偏微分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\partial&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\partial$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;拉普拉斯算子&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nabla&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nabla$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;拉普拉斯算子（另一种）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Delta&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Delta$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;三角形&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\triangle&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\triangle$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;角&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\angle&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\angle$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;垂直&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\perp&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\perp$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;平行&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\parallel&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\parallel$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不平行&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nparallel&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nparallel$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;度数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;^{\circ}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$30^{\circ}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;积分常数 d&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\,dx&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$dx$（间距优化）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;省略号（居中）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cdots&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cdots$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;省略号（底线）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ldots&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ldots$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;省略号（斜线）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ddots&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ddots$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;省略号（竖线）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\vdots&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\vdots$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;星号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ast&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ast$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;星（Kleene）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\star&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\star$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;空心星&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bigstar&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bigstar$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;圆形&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\circ&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\circ$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;空心点&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bullet&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bullet$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;钻石&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\diamond&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\diamond$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;否决（划掉）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cancel{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cancel{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;否决不成立&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bcancel{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bcancel{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;盒子&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\boxed{abc}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\boxed{abc}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十二、多行公式与分段函数&lt;/h2&gt;
+&lt;h3&gt;多行对齐&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{aligned}
+a &amp;amp;= b + c \\
+d &amp;amp;= e + f \\
+g &amp;amp;= h + i
+\end{aligned}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;效果：
+$$
+\begin{aligned}
+a &amp;amp;= b + c \
+d &amp;amp;= e + f \
+g &amp;amp;= h + i
+\end{aligned}
+$$&lt;/p&gt;
+&lt;h3&gt;分段函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+f(x) = 
+\begin{cases}
+x^2, &amp;amp; x &amp;gt; 0 \\
+0, &amp;amp; x \le 0
+\end{cases}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;效果：
+$$
+f(x) =
+\begin{cases}
+x^2, &amp;amp; x &amp;gt; 0 \
+0, &amp;amp; x \le 0
+\end{cases}
+$$&lt;/p&gt;
+&lt;h3&gt;方程组&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{cases}
+x + y + z = 1 \\
+2x + y = 3 \\
+3y + 4z = 5
+\end{cases}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十三、线性代数专用符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;向量&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\vec{v}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\vec{v}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;粗体向量&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbf{v}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbf{v}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;转置&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;A^{\mathsf{T}}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$A^{\mathsf{T}}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;转置（另一种）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;A^\top&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$A^\top$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;共轭转置&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;A^{\dagger}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$A^{\dagger}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;伴随矩阵&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;A^\ast&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$A^\ast$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;点积&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\cdot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\cdot$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;叉积&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\times&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\times$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;张量积&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\otimes&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\otimes$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;直和&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\oplus&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\oplus$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;单位矩阵&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;I&lt;/code&gt; 或 &lt;code&gt;\mathbb{I}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$I$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;零矩阵&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbf{0}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbf{0}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;迹&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{tr}(A)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{tr}(A)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;行列式&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\det(A)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\det(A)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;秩&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{rank}(A)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{rank}(A)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;对角矩阵&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{diag}(a_1,\dots,a_n)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{diag}(a_1,\dots,a_n)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;核（零空间）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\ker&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\ker$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;像（值域）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{Im}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{Im}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;特征值&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\lambda&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\lambda$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;特征向量&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbf{v}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbf{v}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十四、微积分专用符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;导数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;f&apos;(x)&lt;/code&gt; or &lt;code&gt;f^\prime(x)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$f^\prime(x)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;二阶导&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;f&apos;&apos;(x)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$f&apos;&apos;(x)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;偏导&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\frac{\partial f}{\partial x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\frac{\partial f}{\partial x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;梯度&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nabla f&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nabla f$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;散度&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nabla \cdot \mathbf{F}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nabla \cdot \mathbf{F}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;旋度&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nabla \times \mathbf{F}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nabla \times \mathbf{F}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;拉普拉斯&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\nabla^2 f&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\nabla^2 f$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;全微分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;df&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$df$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;变分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\delta F&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\delta F$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;增量&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\Delta x&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\Delta x$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;弧微分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ds&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$ds$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;曲面积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\iint_S&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\iint_S$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;体积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\iiint_V&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\iiint_V$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;线积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\int_C&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\int_C$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十五、概率与统计符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;效果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;概率&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;P(A)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$P(A)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;期望&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{E}[X]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{E}[X]$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;方差&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{Var}[X]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{Var}[X]$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;协方差&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{Cov}[X,Y]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{Cov}[X,Y]$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;标准差&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sigma&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\sigma$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;均数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\bar{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\bar{x}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;中位数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{median}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{median}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;众数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{mode}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{mode}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;正态分布&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathcal{N}(\mu,\sigma^2)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathcal{N}(\mu,\sigma^2)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;二项分布&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{B}(n,p)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{B}(n,p)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;泊松分布&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\operatorname{Poi}(\lambda)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\operatorname{Poi}(\lambda)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;相关系数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\rho&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\rho$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;卡方分布&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\chi^2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\chi^2$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;似然函数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathcal{L}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathcal{L}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十六、常见字体&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;字体&lt;/th&gt;
+&lt;th&gt;LaTeX 写法&lt;/th&gt;
+&lt;th&gt;示例&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;黑板粗体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbb{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbb{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;花体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathcal{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathcal{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;手写体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathscr{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathscr{ABCDEF}$（需 &lt;code&gt;\usepackage{mathrsfs}&lt;/code&gt;）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;粗体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathbf{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathbf{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;罗马体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathrm{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathrm{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;打字机体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathtt{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathtt{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;无衬线体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathsf{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathsf{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;德文尖角体&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\mathfrak{}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;$\mathfrak{ABCDEF}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr /&gt;
+&lt;h2&gt;其他技巧&lt;/h2&gt;
+&lt;h3&gt;1. 间距控制&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;a\,b    % 窄空格（推荐用于 dx 前的间距）
+a\;b    % 中等空格
+a\quad b  % 一个 em 空格
+a\qquad b % 两个 em 空格
+a\!b    % 负空格（往回缩）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;2. 文本在公式中&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;\text{这是一个文本}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;3. 颜色&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;{\color{red} x} + {\color{blue} y}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;4. 堆积符号&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;\overset{a}{\rightarrow}   % 箭头上面加 a
+\underset{a}{\rightarrow}  % 箭头下面加 a
+\stackrel{?}{=}            % 等号上面加 ?
+\xrightarrow{a+b}          % 长箭头上面加文本
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;5. 大括号分组（可扩展）&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;\left( \frac{a}{b} \right)  % 自动调整括号大小
+\bigl( \bigr)               % 手动指定大小
+\Bigl( \Bigr)
+\biggl( \biggr)
+\Biggl( \Biggr)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2&gt;GitHub 上相关的开源项目&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;项目&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://github.com/wch/latexsheet&quot;&gt;&lt;strong&gt;wch/latexsheet&lt;/strong&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;经典 LaTeX 符号速查表，PDF 格式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://github.com/arasgungore/LaTeX-cheat-sheet&quot;&gt;&lt;strong&gt;arasgungore/LaTeX-cheat-sheet&lt;/strong&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;详细的 LaTeX Cheat Sheet，包含符号、环境等&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://github.com/tchataigner/LaTeX-cheat-sheet&quot;&gt;&lt;strong&gt;tchataigner/LaTeX-cheat-sheet&lt;/strong&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;符号、字体、矩阵一应俱全&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://github.com/matze/mtheme&quot;&gt;&lt;strong&gt;matze/mtheme&lt;/strong&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;虽然没有符号表，但含有常用数学命令总结&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</content:encoded></item><item><title>Hello, world!</title><link>https://wuxushangzeng.github.io/posts/hello-world/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/hello-world/</guid><description>测试</description><pubDate>Tue, 26 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;strong&gt;Markdown&lt;/strong&gt; 语法与特性。&lt;/p&gt;
+&lt;h2&gt;这是一个二级标题&lt;/h2&gt;
+&lt;p&gt;这是内容&lt;/p&gt;
+&lt;h2&gt;基本语法&lt;/h2&gt;
+&lt;p&gt;John Gruber 的原始设计文档中列出的元素，所有 Markdown 应用程序都支持这些元素。&lt;/p&gt;
+&lt;h3&gt;标题&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;# H1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;## H2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;### H3&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;文本&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;加粗&lt;/strong&gt;：&lt;code&gt;**Text**&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;斜体&lt;/em&gt;：&lt;code&gt;_Text_&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;行间代码块&lt;/code&gt;：`Text`&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;引用块：&lt;code&gt;&amp;gt; Text&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;引用内容1 &amp;lt;br&amp;gt;
+引用内容2&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;列表&lt;/h3&gt;
+&lt;h4&gt;无序列表：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;- item-1
+- item-2
+- item-3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;item-1&lt;/li&gt;
+&lt;li&gt;item-2&lt;/li&gt;
+&lt;li&gt;item-3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;有序列表&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;1. item-1
+2. item-2
+3. item-3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;item-1&lt;/li&gt;
+&lt;li&gt;item-2&lt;/li&gt;
+&lt;li&gt;item-3&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;有序列表也可以用 &lt;code&gt;0. &lt;/code&gt; 标序号，Markdown 会自动渲染。&lt;/p&gt;
+&lt;h3&gt;链接&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;\[title\](https://... or ./file)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://space.bilibili.com/192846040&quot;&gt;LapLacan 的 Bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;图片&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;\!\[title\](link or ./image.png)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;更推荐使用 &lt;code&gt;html&lt;/code&gt; 语法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div align=&quot;center&quot;&amp;gt;
+    &amp;lt;img src=&quot;link1&quot; width=&quot;90%&quot; alt=&quot;无法显示图片时显示的文本&quot;&amp;gt;
+    &amp;lt;img src=&quot;link2&quot; width=&quot;90%&quot; alt=&quot;无法显示图片时显示的文本&quot;&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;分割线&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;---&lt;/code&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;扩展语法&lt;/h2&gt;
+&lt;p&gt;这些元素通过添加额外的功能扩展了基本语法。但是，并非所有 Markdown 应用程序都支持这些元素。&lt;/p&gt;
+&lt;h3&gt;表格&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;| Syntax | Description |
+| --- | --- | 
+| Header | Title |
+| Paragraph | Text |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;左对齐：&lt;code&gt;:---&lt;/code&gt;
+右对齐：&lt;code&gt;---:&lt;/code&gt;
+居中对齐：&lt;code&gt;:---:&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Syntax&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Header&lt;/td&gt;
+&lt;td&gt;Title&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Paragraph&lt;/td&gt;
+&lt;td&gt;Text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;代码块&lt;/h3&gt;
+&lt;p&gt;```
+{
+&quot;firstName&quot;: &quot;John&quot;,
+&quot;lastName&quot;: &quot;Smith&quot;,
+&quot;age&quot;: 25
+}
+```&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    {
+        &quot;firstName&quot;: &quot;John&quot;,
+        &quot;lastName&quot;: &quot;Smith&quot;,
+        &quot;age&quot;: 25
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;也可以指定语言&lt;/p&gt;
+&lt;p&gt;```python &amp;lt;br&amp;gt;
+代码 &amp;lt;br&amp;gt;
+```&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import time
+# Quick, count to ten!
+for i in range(10):
+    # (but not *too* quick)
+    time.sleep(0.5)
+    print i
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;脚注&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;[^1]&lt;/code&gt; &amp;lt;br&amp;gt;
+&lt;code&gt;[^1]:脚注内容&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这是一段文本. &lt;a href=&quot;%E8%84%9A%E6%B3%A8%E5%86%85%E5%AE%B91&quot;&gt;^1&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;定义列表&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;term
+: definition
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;删除线&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;~~Text~~
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;s&gt;Text&lt;/s&gt;&lt;/p&gt;
+&lt;h3&gt;任务列表&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;- [ ] Task1
+- [x] Task2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;[ ] Task1&lt;/li&gt;
+&lt;li&gt;[x] Task2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;LATEX&lt;/h2&gt;
+&lt;p&gt;能渲染 LATEX 也是很重要的(&lt;s&gt;只是因为我是数学系的&lt;/s&gt;)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$$
+\begin{align*}
+    \int_a^b f^\prime(x) dx = f(b) - f(a)
+\end{align*}
+$$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;$$
+\begin{align*}
+\int_a^b f^\prime(x) dx = f(b) - f(a)
+\end{align*}
+$$&lt;/p&gt;
+&lt;p&gt;基本的 LATEX 教程可以看 &lt;a href=&quot;/posts/latex-guide/&quot;&gt;LATEX 速查&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;内嵌PDF&lt;/h2&gt;
+&lt;p&gt;&amp;lt;embed src=&quot;/pdf/r.pdf&quot; type=&quot;application/pdf&quot; width=&quot;100%&quot; height=&quot;600px&quot; /&amp;gt;&lt;/p&gt;
+</content:encoded></item></channel></rss>

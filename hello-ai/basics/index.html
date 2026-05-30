@@ -1,0 +1,2953 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="面向中文学习者的 AI / LLM 学习入口平台">
+      
+      
+        <meta name="author" content="Hello-AI Team">
+      
+      
+        <link rel="canonical" href="https://unclecheng-li.github.io/Hello-AI/basics/">
+      
+      
+        <link rel="prev" href="../preface/roadmap/">
+      
+      
+        <link rel="next" href="what-is-ai/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>基础总览 - Hello-AI</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="Hello-AI" class="md-header__button md-logo" aria-label="Hello-AI" data-md-component="logo">
+      
+  <img src="../assets/images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Hello-AI
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              基础总览
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Unclecheng-li/Hello-AI" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Hello-AI
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Hello-AI" class="md-nav__button md-logo" aria-label="Hello-AI" data-md-component="logo">
+      
+  <img src="../assets/images/logo.svg" alt="logo">
+
+    </a>
+    Hello-AI
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Unclecheng-li/Hello-AI" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Hello-AI
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../preface/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    前言
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            前言
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preface/start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    新手起步
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preface/roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    AI 基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            AI 基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="what-is-ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    什么是 AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="machine-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    机器学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="what-is-llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    什么是 LLM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multimodal-ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多模态 AI：文字、图片、语音和视频
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-data-training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    模型、数据、训练与推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="token-embedding-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Token、Embedding 与上下文窗口
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="prompt-context-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt、上下文和记忆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="temperature-sampling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    温度与采样参数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    为什么模型会胡说
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../prompt/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Prompt
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Prompt
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt/prompt-basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt/structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    角色、任务、约束与输出格式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt/templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt 模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt/stable-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    让模型稳定输出
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    总结、改写、分类与抽取
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt/failure-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt 常见失败案例
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    AI 工具使用
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI 工具使用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/chat-products/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat 类产品怎么用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/model-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    如何选择模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API 入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/tool-calling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    函数调用与工具调用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/local-vs-online/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    本地与在线模型的差异
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat、Copilot、Agent 与 Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../rag/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    RAG
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            RAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/why-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    为什么需要 RAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/chunking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文档切分
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/vectorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    向量化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/rerank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    重排
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    生成
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RAG 常见问题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agent/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Agent智能体
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Agent智能体
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent/workflow-vs-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent 和工作流的区别
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent/tool-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    工具调用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent/task-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    任务拆解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent/reflection-loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    反思与循环
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent/failure-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent 常见失败模式
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../build/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    AI Build 实战
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            AI Build 实战
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/api-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API 接入
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/simple-app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    最小 AI 应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/local-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    本地模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    部署入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../eval/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    AI Evals
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            AI Evals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eval/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    主观与客观指标
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eval/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    幻觉评测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eval/quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    输出质量判断
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eval/simple-eval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    简单评测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../safety/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    AI与大模型安全
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            AI与大模型安全
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safety/data-leakage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数据泄露
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safety/prompt-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    提示注入
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safety/over-permission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    越权调用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safety/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    使用边界与合规提示
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../lab/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    实验
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            实验
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab/prompt-rewrite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt 改写
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab/rag-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RAG 基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab/agent-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent 拆解
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    相关资源
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_12" id="__nav_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            相关资源
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    模型平台
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/apis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API 平台
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/rag-frameworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RAG 框架
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/agent-frameworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent 框架
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/eval-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    评测工具
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/books-and-articles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    书单与文章
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    标签索引
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      这章解决什么问题
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      一张图看懂学习路线
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      如果你时间有限
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      如果你想系统学习
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      学 AI 基础时，抓住三条线
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="学 AI 基础时，抓住三条线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 从「任务」看 AI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 从「流程」看模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 从「证据」看可信度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      学完之后，你应该能分清
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      读完这一章，你可以继续去哪
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      下一步
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../tags/#tag:ai-基础" class="md-tag">AI 基础</a>
+      
+    
+  </nav>
+
+
+  
+    <a href="https://github.com/Unclecheng-li/Hello-AI/edit/main/docs/basics/index.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="ai">AI 基础总览<a class="headerlink" href="#ai" title="Permanent link">&para;</a></h1>
+<div style="position:relative;overflow:hidden;border:1px solid rgba(255,112,67,0.28);border-radius:1rem;padding:1.25rem 1.35rem;margin:0.8rem 0 1.5rem;background:linear-gradient(135deg,rgba(255,112,67,0.14),rgba(63,81,181,0.08) 46%,rgba(0,188,212,0.10));box-shadow:0 0.65rem 1.8rem rgba(0,0,0,0.10);">
+<div style="position:absolute;right:-3.8rem;top:-4.2rem;width:12rem;height:12rem;border-radius:50%;background:radial-gradient(circle,rgba(255,112,67,0.26),rgba(255,112,67,0));"></div>
+<div style="position:absolute;left:-4rem;bottom:-5rem;width:14rem;height:14rem;border-radius:50%;background:radial-gradient(circle,rgba(33,150,243,0.18),rgba(33,150,243,0));"></div>
+<div style="position:relative;z-index:1;">
+<span style="display:inline-block;padding:0.18rem 0.55rem;border-radius:999px;background:rgba(255,112,67,0.16);color:#e65100;font-size:0.78rem;font-weight:700;letter-spacing:0.02em;">AI 基础 · 总览</span>
+
+<strong>这一章帮你搭一张 AI 地图。</strong>从 AI、机器学习、深度学习一路走到 LLM、多模态、Token、Prompt、采样参数和幻觉。读完后，你再看 ChatGPT、Claude、Gemini、RAG、Agent 这些词，脑子里会有一条清楚的线。
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:0.75rem;margin-top:1rem;">
+<div style="padding:0.8rem;border-radius:0.75rem;background:var(--md-default-bg-color);border:1px solid var(--md-default-fg-color--lightest);">
+<strong>看懂概念</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">AI / ML / DL / LLM</span>
+</div>
+<div style="padding:0.8rem;border-radius:0.75rem;background:var(--md-default-bg-color);border:1px solid var(--md-default-fg-color--lightest);">
+<strong>看懂机制</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">数据、训练、推理、Token</span>
+</div>
+<div style="padding:0.8rem;border-radius:0.75rem;background:var(--md-default-bg-color);border:1px solid var(--md-default-fg-color--lightest);">
+<strong>看懂边界</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">上下文、采样、幻觉、核查</span>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>这一页是「AI 基础」章节的入口。你可以把它当路线图，也可以当复习清单。</p>
+</blockquote>
+<h2 id="_1">这章解决什么问题<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>刚开始学 AI，最容易卡在三个地方。</p>
+<p>一个是<strong>词太多</strong>：AI、ML、DL、LLM、GenAI、多模态、Transformer、Embedding、Context window，全都挤在一起。</p>
+<p>一个是<strong>体验太像魔法</strong>：你输入一句话，模型开始写答案、改代码、看图片、总结文档。它表现得像懂了你，但背后其实是一套数据、模型、推理和采样流程。</p>
+<p>还有一个是<strong>风险太隐蔽</strong>：模型会写得很顺，也会编造引用、误读材料、泄露隐私、继承偏见。UNESCO 在生成式 AI 教育指南中强调，学习者需要理解工具如何运作、如何验证、如何保护隐私，并保持以人为本的使用方式；NIST 的 <a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">AI 600-1 生成式 AI 风险画像</a> 也把 confabulation / hallucination、信息完整性、隐私、偏见和滥用列为关键风险。</p>
+<p>所以这一章不追求把你直接训练成算法工程师。它的目标更现实：让你知道每个词在整张地图上的位置，知道该从哪篇开始读，知道什么时候该信，什么时候该查。</p>
+<h2 id="_2">一张图看懂学习路线<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div style="overflow-x:auto;padding:0.5rem 0 0.8rem;margin:1rem 0;">
+<div style="min-width:1600px;">
+<pre class="mermaid"><code>flowchart LR
+    A[什么是 AI&lt;br/&gt;智能行为的大地图] --&gt; B[机器学习&lt;br/&gt;从数据里找规律]
+    B --&gt; C[深度学习&lt;br/&gt;多层神经网络]
+    C --&gt; D[什么是 LLM&lt;br/&gt;预测下一个 token]
+    D --&gt; E[多模态 AI&lt;br/&gt;文字/图片/语音/视频]
+    D --&gt; F[模型/数据/训练/推理&lt;br/&gt;模型怎么学和怎么用]
+    F --&gt; G[Token/Embedding/上下文&lt;br/&gt;文字如何变成可计算对象]
+    G --&gt; H[Prompt/上下文/记忆&lt;br/&gt;怎么组织任务现场]
+    H --&gt; I[温度与采样&lt;br/&gt;回答为什么会变]
+    I --&gt; J[为什么模型会胡说&lt;br/&gt;事实核查与风险控制]
+
+    classDef base fill:#fff3e0,stroke:#fb8c00,stroke-width:2px,color:#3e2723;
+    classDef model fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px,color:#0d47a1;
+    classDef usage fill:#fce4ec,stroke:#e91e63,stroke-width:2px,color:#880e4f;
+    classDef risk fill:#ede7f6,stroke:#7e57c2,stroke-width:2px,color:#311b92;
+
+    class A,B,C base;
+    class D,E,F,G model;
+    class H,I usage;
+    class J risk;</code></pre>
+</div>
+</div>
+<p>这条线可以拆成四段。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>你要建立的直觉</th>
+<th>对应章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>认识 AI 大地图</td>
+<td>AI 是总称，机器学习是其中一条路线，深度学习是现代 AI 的关键技术分支</td>
+<td><a href="what-is-ai/">什么是 AI</a>、<a href="machine-learning/">机器学习</a>、<a href="deep-learning/">深度学习</a></td>
+</tr>
+<tr>
+<td>进入 LLM 世界</td>
+<td>LLM 生成文字靠 token 级预测，现代生成式 AI 又把文本、图像、语音、视频接到一起</td>
+<td><a href="what-is-llm/">什么是 LLM</a>、<a href="multimodal-ai/">多模态 AI</a></td>
+</tr>
+<tr>
+<td>拆开模型工作流</td>
+<td>数据、训练、推理、Token、Embedding、上下文窗口决定了模型能力和调用成本</td>
+<td><a href="model-data-training/">模型、数据、训练与推理</a>、<a href="token-embedding-context/">Token、Embedding 与上下文窗口</a></td>
+</tr>
+<tr>
+<td>学会稳定使用</td>
+<td>Prompt 组织任务现场，采样参数影响输出风格，事实核查处理幻觉风险</td>
+<td><a href="prompt-context-memory/">Prompt、上下文和记忆</a>、<a href="temperature-sampling/">温度与采样参数</a>、<a href="hallucination/">为什么模型会胡说</a></td>
+</tr>
+</tbody>
+</table>
+<p>IBM 在 <a href="https://www.ibm.com/think/topics/ai-vs-machine-learning-vs-deep-learning-vs-neural-networks">AI、机器学习、深度学习与神经网络的对比文章</a>中把四者整理成层级关系：AI 是最宽的概念，机器学习属于 AI，深度学习属于机器学习，神经网络是深度学习算法的重要基础。Google Cloud 的 <a href="https://cloud.google.com/learn/artificial-intelligence-vs-machine-learning">AI 与机器学习介绍</a>也采用了类似解释：AI 关注让系统感知、推理、行动和调整，机器学习关注从数据中学习。</p>
+<h2 id="_3">如果你时间有限<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>直接读这四篇。</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:0.85rem;margin:1.1rem 0 1.5rem;">
+<p><a href="what-is-ai/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(255,112,67,0.26);background:linear-gradient(135deg,rgba(255,112,67,0.11),rgba(255,112,67,0.02));">
+<strong>1. 什么是 AI</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">先知道这张大地图有多大</span>
+</a>
+<a href="what-is-llm/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(126,87,194,0.26);background:linear-gradient(135deg,rgba(126,87,194,0.11),rgba(126,87,194,0.02));">
+<strong>2. 什么是 LLM</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">理解聊天模型怎么生成文字</span>
+</a>
+<a href="prompt-context-memory/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(33,150,243,0.26);background:linear-gradient(135deg,rgba(33,150,243,0.10),rgba(33,150,243,0.02));">
+<strong>3. Prompt、上下文和记忆</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">学会组织一场有效对话</span>
+</a>
+<a href="hallucination/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(233,30,99,0.26);background:linear-gradient(135deg,rgba(233,30,99,0.10),rgba(233,30,99,0.02));">
+<strong>4. 为什么模型会胡说</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">知道哪些回答必须回到来源核查</span>
+</a></p>
+</div>
+<p>这四篇是使用 LLM 的最小必要知识。你会知道 AI 是什么、LLM 怎么生成答案、Prompt 怎么影响结果，以及为什么模型会自信地出错。</p>
+<h2 id="_4">如果你想系统学习<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>按导航顺序读就行。</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0.85rem;margin:1.1rem 0 1.5rem;">
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 1 站：<a href="what-is-ai/">什么是 AI</a></strong></p>
+<p>从达特茅斯会议、图灵测试、AI 三次浪潮讲起，先把人工智能放进历史里。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 2 站：<a href="machine-learning/">机器学习</a></strong></p>
+<p>理解计算机怎么从例子里学规律，分清监督学习、无监督学习和强化学习。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 3 站：<a href="deep-learning/">深度学习</a></strong></p>
+<p>看懂神经网络的层级结构，以及 AlexNet 之后深度学习为什么突然爆发。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 4 站：<a href="what-is-llm/">什么是 LLM</a></strong></p>
+<p>把聊天窗口拆开，看见 token、上下文、Transformer 和下一个 token 预测。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 5 站：<a href="multimodal-ai/">多模态 AI</a></strong></p>
+<p>把文字、图片、语音和视频放进同一张图里，理解「统一入口」怎么形成。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 6 站：<a href="model-data-training/">模型、数据、训练与推理</a></strong></p>
+<p>看懂模型从原始数据到上线服务的完整链路，也顺手理解为什么 AI 调用按 token 收费。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 7 站：<a href="token-embedding-context/">Token、Embedding 与上下文窗口</a></strong></p>
+<p>理解文字如何变成数字，语义如何进入向量空间，上下文窗口为什么会限制模型记忆。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 8 站：<a href="prompt-context-memory/">Prompt、上下文和记忆</a></strong></p>
+<p>分清用户输入、系统规则、聊天历史、长期记忆和工具消息，各自负责什么。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 9 站：<a href="temperature-sampling/">温度与采样参数</a></strong></p>
+<p>看懂 temperature、top-k、top-p、seed 和惩罚项，知道怎么在稳定与发散之间调节。</p>
+</div>
+<div style="padding:1rem;border-radius:0.9rem;border:1px solid var(--md-default-fg-color--lightest);background:var(--md-default-bg-color);box-shadow:0 0.25rem 0.9rem rgba(0,0,0,0.05);">
+<p><strong>第 10 站：<a href="hallucination/">为什么模型会胡说</a></strong></p>
+<p>理解幻觉、事实核查、Grounding、引用证据和高风险场景里的人工复核。</p>
+</div>
+</div>
+<p>Google 的 <a href="https://developers.google.com/machine-learning/crash-course">Machine Learning Crash Course</a> 也采用类似路径：先学回归、分类、数据处理、泛化和过拟合，再进入神经网络、Embedding 和大型语言模型。Hugging Face 的 <a href="https://huggingface.co/learn/nlp-course/chapter1/1">NLP Course</a> 则把 Transformer、pipeline、Tokenizer、Encoder / Decoder 架构作为进入现代 NLP 和 LLM 的入口。</p>
+<h2 id="ai_1">学 AI 基础时，抓住三条线<a class="headerlink" href="#ai_1" title="Permanent link">&para;</a></h2>
+<h3 id="1-ai">1. 从「任务」看 AI<a class="headerlink" href="#1-ai" title="Permanent link">&para;</a></h3>
+<p>别一上来钻进公式。先看 AI 正在解决什么任务。</p>
+<p>识别图片、过滤垃圾邮件、推荐视频、预测故障、翻译文本、生成代码、整理会议纪要，这些任务背后的技术路线不同，但都可以放进 AI 这张大地图。理解任务，你才知道该看哪一类模型、哪一种数据、哪种评估方式。</p>
+<h3 id="2">2. 从「流程」看模型<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>现代 LLM 可以拆成一条很朴素的流程。</p>
+<pre><code>数据 → 训练 → 模型 → 推理 → 输出 → 评估 → 迭代</code></pre>
+<p>OpenAI 的 <a href="https://developers.openai.com/api/docs/guides/text">Text generation 文档</a> 用 Responses API 展示了输入、指令、输出、结构化结果和文件输入的关系；Anthropic 的 <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview">Prompt engineering overview</a> 强调先定义成功标准，再通过清晰指令、上下文、示例和评估不断迭代。</p>
+<p>这对新手很重要。Prompt 不是咒语，它更像任务说明书。你要告诉模型目标、材料、约束、格式和判断标准，然后用测试样例检查结果。</p>
+<h3 id="3">3. 从「证据」看可信度<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>生成式 AI 最大的错觉，是流畅度会伪装成可信度。</p>
+<p>Google Vertex AI 的 <a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/grounding/overview?hl=zh-cn">Grounding 文档</a> 把 grounding 定义为将模型输出连接到可验证信息源的能力，目标是减少无依据内容，并通过来源链接提升可审核性。Anthropic 的 <a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations">Reduce hallucinations</a> 建议给模型明确材料、允许它说「不知道」、要求直接引用证据，并让无证据的声明撤回。</p>
+<p>所以，基础章节的收尾放在「幻觉」。这不是吓人，是提醒你：AI 可以帮你跑得更快，但事实性问题必须回到来源。</p>
+<h2 id="_5">学完之后，你应该能分清<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>你应该记住的说法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI</td>
+<td>一张大地图，包含识别、预测、推荐、生成、规划和对话等任务</td>
+</tr>
+<tr>
+<td>机器学习</td>
+<td>让计算机从数据里找规律，用规律处理新样本</td>
+</tr>
+<tr>
+<td>深度学习</td>
+<td>用多层神经网络自动提炼复杂特征，适合图像、语音、文本等非结构化数据</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>大语言模型，根据上下文预测下一个 token，并连续生成文本</td>
+</tr>
+<tr>
+<td>多模态 AI</td>
+<td>让模型同时处理文字、图片、语音、视频等不同信息形式</td>
+</tr>
+<tr>
+<td>模型</td>
+<td>训练后得到的参数化能力，可以被部署、调用和评估</td>
+</tr>
+<tr>
+<td>Token</td>
+<td>模型处理文本的基本单位，直接影响上下文长度和调用成本</td>
+</tr>
+<tr>
+<td>Embedding</td>
+<td>把 token、句子、图片等内容转成向量，方便模型计算相似关系</td>
+</tr>
+<tr>
+<td>Context</td>
+<td>当前对话现场，包含提示词、历史消息、材料、工具结果等</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>跨会话保存的信息，需要设计边界、更新机制和隐私规则</td>
+</tr>
+<tr>
+<td>Temperature</td>
+<td>控制采样分布的随机性，影响回答稳定性和多样性</td>
+</tr>
+<tr>
+<td>幻觉</td>
+<td>模型生成看似合理但错误、虚构、无法验证或与材料冲突的内容</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_6">读完这一章，你可以继续去哪<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:0.85rem;margin:1.1rem 0 1.5rem;">
+<p><a href="../prompt/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(33,150,243,0.26);background:linear-gradient(135deg,rgba(33,150,243,0.10),rgba(33,150,243,0.02));">
+<strong>去 Prompt 章节</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">把基础概念变成可复用的提问方法</span>
+</a>
+<a href="../tools/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(126,87,194,0.26);background:linear-gradient(135deg,rgba(126,87,194,0.10),rgba(126,87,194,0.02));">
+<strong>去 AI 工具使用</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">学会选择模型、使用 API、理解工具调用</span>
+</a>
+<a href="../rag/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(255,112,67,0.26);background:linear-gradient(135deg,rgba(255,112,67,0.10),rgba(255,112,67,0.02));">
+<strong>去 RAG 章节</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">学习如何给模型接上外部知识和来源证据</span>
+</a>
+<a href="../eval/" style="display:block;text-decoration:none;color:inherit;padding:1rem;border-radius:0.9rem;border:1px solid rgba(233,30,99,0.26);background:linear-gradient(135deg,rgba(233,30,99,0.10),rgba(233,30,99,0.02));">
+<strong>去 AI Evals</strong><br><span style="color:var(--md-default-fg-color--light);font-size:0.9rem;">学会判断输出质量、事实性和稳定性</span>
+</a></p>
+</div>
+<h2 id="_7">下一步<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<div style="border:1px solid var(--md-default-fg-color--lightest);border-left:4px solid var(--md-accent-fg-color);border-radius:0.85rem;padding:1rem 1.1rem;margin:0.9rem 0;background:linear-gradient(135deg,var(--md-code-bg-color),rgba(255,112,67,0.06));">
+<p>准备开始 AI 基础章节时，下一站建议看：</p>
+<p><a href="what-is-ai/" style="display:block;margin-top:0.75rem;padding:0.85rem 1rem;border-radius:0.65rem;background:var(--md-default-bg-color);text-decoration:none;border:1px solid var(--md-default-fg-color--lightest);">
+  <strong>什么是 AI →</strong><br>
+  <span style="color:var(--md-default-fg-color--light);font-size:0.92rem;">从人工智能的大地图开始，先分清 AI、机器学习、深度学习和大语言模型的位置。</span>
+</a></p>
+</div>
+
+  <aside class="hello-feedback">
+    <strong>反馈与共建</strong>
+    <a href="https://github.com/Unclecheng-li/Hello-AI/issues/new?template=bug_report.yml&title=%5B%E5%8B%98%E8%AF%AF%5D%20%E5%9F%BA%E7%A1%80%E6%80%BB%E8%A7%88">勘误</a>
+    <a href="https://github.com/Unclecheng-li/Hello-AI/issues/new?template=feature_request.yml&title=%5B%E5%BB%BA%E8%AE%AE%5D%20%E5%9F%BA%E7%A1%80%E6%80%BB%E8%A7%88">建议</a>
+    
+      <a href="https://github.com/Unclecheng-li/Hello-AI/edit/main/docs/basics/index.md">编辑本页</a>
+    
+  </aside>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        这页有帮助吗？
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="有帮助" data-md-value="helpful">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="需要改进" data-md-value="needs-improvement">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="helpful" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              感谢反馈。你也可以通过页面下方的共建入口继续补充内容。
+            </div>
+          
+            <div data-md-value="needs-improvement" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              感谢反馈。欢迎通过页面下方的勘误或建议入口提出修改建议。
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Hello-AI Team
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.tracking", "search.highlight", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

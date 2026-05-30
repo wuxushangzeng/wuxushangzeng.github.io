@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>矩阵在线计算器</title>
+	<link rel="stylesheet" href="style.css">
+	<script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<div class="app-container">
+		<header class="app-header">
+			<h1>矩阵在线计算器</h1>
+			<p class="subtitle">Matrix Calculator — 单矩阵运算 · 线性方程组 · 双矩阵运算</p>
+		</header>
+
+		<!-- Tab 导航 -->
+		<nav class="tab-nav">
+			<button class="tab-btn active" data-tab="single">单矩阵运算</button>
+			<button class="tab-btn" data-tab="system">线性方程组</button>
+			<button class="tab-btn" data-tab="dual">双矩阵运算</button>
+		</nav>
+
+		<!-- ====================== 单矩阵运算 ====================== -->
+		<section id="tab-single" class="tab-panel active">
+			<div class="panel-row">
+				<!-- 矩阵尺寸控制 -->
+				<div class="size-controls">
+					<label>行 <input type="number" id="sing-rows" value="3" min="1" max="10"></label>
+					<label>列 <input type="number" id="sing-cols" value="3" min="1" max="10"></label>
+					<button id="sing-resize" class="btn btn-secondary">调整尺寸</button>
+					<button id="sing-import" class="btn btn-secondary">从文本导入</button>
+					<button id="sing-paste" class="btn btn-secondary">从剪贴板粘贴</button>
+				</div>
+			</div>
+
+			<!-- 矩阵 A 输入表格 -->
+			<div class="matrix-wrapper">
+				<div class="matrix-label">矩阵 A</div>
+				<div id="sing-grid" class="matrix-grid"></div>
+			</div>
+
+			<!-- 数乘 -->
+			<div class="scalar-row">
+				<label>标量乘：α = <input type="text" id="sing-scalar" value="2" size="4" class="scalar-input"></label>
+				<button id="sing-scalar-mul" class="btn btn-primary">α × A</button>
+			</div>
+
+			<!-- 单矩阵操作按钮 -->
+			<div class="btn-group">
+				<button id="sing-det"    class="btn btn-primary">行列式 det(A)</button>
+				<button id="sing-inv"    class="btn btn-primary">逆矩阵 A⁻¹</button>
+				<button id="sing-eigen"  class="btn btn-primary">特征值 &amp; 特征向量</button>
+				<button id="sing-rank"   class="btn btn-primary">秩 rank(A)</button>
+				<button id="sing-trace"  class="btn btn-primary">迹 tr(A)</button>
+				<button id="sing-lu"     class="btn btn-primary">LU 分解</button>
+				<button id="sing-qr"     class="btn btn-primary">QR 分解</button>
+				<button id="sing-svd"    class="btn btn-primary">奇异值分解 SVD</button>
+			</div>
+			<div class="btn-group">
+				<label>幂：n = <input type="number" id="sing-power-n" value="2" min="-10" max="100" class="scalar-input"></label>
+				<button id="sing-power"  class="btn btn-primary">Aⁿ</button>
+			</div>
+
+			<!-- 结果区 -->
+			<div id="sing-result" class="result-area"></div>
+		</section>
+
+		<!-- ====================== 线性方程组 ====================== -->
+		<section id="tab-system" class="tab-panel">
+			<div class="panel-row">
+				<div class="size-controls">
+					<label>未知数个数 n <input type="number" id="sys-cols" value="3" min="1" max="10"></label>
+					<label>方程个数 m <input type="number" id="sys-rows" value="3" min="1" max="10"></label>
+					<button id="sys-resize" class="btn btn-secondary">调整尺寸</button>
+				</div>
+			</div>
+
+			<div class="matrix-wrapper">
+				<div class="matrix-label">系数矩阵 A</div>
+				<div id="sys-grid-a" class="matrix-grid"></div>
+			</div>
+
+			<div class="matrix-wrapper">
+				<div class="matrix-label">常数向量 b</div>
+				<div id="sys-grid-b" class="matrix-grid-vector"></div>
+			</div>
+
+			<div class="btn-group">
+				<button id="sys-solve" class="btn btn-primary">求解 Ax = b</button>
+			</div>
+
+			<div id="sys-result" class="result-area"></div>
+		</section>
+
+		<!-- ====================== 双矩阵运算 ====================== -->
+		<section id="tab-dual" class="tab-panel">
+			<div class="panel-row">
+				<div class="size-controls">
+					<label>A 行 <input type="number" id="dual-a-rows" value="3" min="1" max="10"></label>
+					<label>A 列 <input type="number" id="dual-a-cols" value="3" min="1" max="10"></label>
+					<label>B 行 <input type="number" id="dual-b-rows" value="3" min="1" max="10"></label>
+					<label>B 列 <input type="number" id="dual-b-cols" value="3" min="1" max="10"></label>
+					<button id="dual-resize" class="btn btn-secondary">调整尺寸</button>
+				</div>
+			</div>
+
+			<div class="dual-matrix-row">
+				<div class="matrix-wrapper">
+					<div class="matrix-label">矩阵 A</div>
+					<div id="dual-grid-a" class="matrix-grid"></div>
+				</div>
+				<div class="matrix-wrapper">
+					<div class="matrix-label">矩阵 B</div>
+					<div id="dual-grid-b" class="matrix-grid"></div>
+				</div>
+			</div>
+
+			<div class="btn-group">
+				<button id="dual-add" class="btn btn-primary">A + B</button>
+				<button id="dual-sub" class="btn btn-primary">A − B</button>
+				<button id="dual-mul" class="btn btn-primary">A × B</button>
+			</div>
+
+			<div id="dual-result" class="result-area"></div>
+		</section>
+
+		<!-- ====================== 文本导入弹窗 ====================== -->
+		<div id="import-modal" class="modal hidden">
+			<div class="modal-content">
+				<h2>导入矩阵</h2>
+				<p class="modal-hint">支持格式：<code>[1,2,3;4,5,6]</code> &nbsp;或&nbsp; <code>1 2 3<br>4 5 6</code> &nbsp;或 CSV</p>
+				<textarea id="import-textarea" rows="6" placeholder="在此粘贴矩阵..."></textarea>
+				<div class="modal-btns">
+					<button id="import-confirm" class="btn btn-primary">导入</button>
+					<button id="import-cancel" class="btn btn-secondary">取消</button>
+				</div>
+				<div id="import-error" class="error-msg hidden"></div>
+			</div>
+		</div>
+
+		<!-- ====================== 历史记录 ====================== -->
+		<section class="history-section">
+			<div class="history-header">
+				<h2>计算历史</h2>
+				<button id="clear-history" class="btn btn-secondary btn-sm">清空</button>
+			</div>
+			<div id="history-list" class="history-list"></div>
+		</section>
+	</div>
+</body>
+</html>

@@ -1,4 +1,457 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LapLacan&apos;s Blog</title><description>LapLacan</description><link>https://wuxushangzeng.github.io/</link><language>zh_CN</language><item><title>MySQL 查询命令速查</title><link>https://wuxushangzeng.github.io/posts/mysql/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/mysql/</guid><description>MySQL 查询命令速查</description><pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;一、基础查询&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LapLacan&apos;s Blog</title><description>LapLacan</description><link>https://wuxushangzeng.github.io/</link><language>zh_CN</language><item><title>Vim 配置</title><link>https://wuxushangzeng.github.io/posts/archlinux-guide/vim-tech/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/archlinux-guide/vim-tech/</guid><description>Vim 配置</description><pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;以下均为对 &lt;code&gt;~/.vimrc&lt;/code&gt; 的操作。&lt;/p&gt;
+&lt;h2&gt;基本配置&lt;/h2&gt;
+&lt;h3&gt;关闭兼容模式&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;set nocompatible
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这告诉Vim不要再假装自己的前身Vi了。&lt;/p&gt;
+&lt;p&gt;Vim 启动时默认是 compatible（兼容模式），此时 Vim 的行为会尽量模仿原始的 Vi 编辑器，以保证老脚本或习惯 Vi 的用户能够正常使用。但这样会牺牲很多 Vim 的特色功能，比如语法高亮、可视模式、自动缩进、命令行历史等。&lt;/p&gt;
+&lt;p&gt;设置 nocompatible 后的效果：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;开启文件类型检测、语法高亮等现代编辑器特性&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;允许使用 Vim 独有的选项和映射（如 set backspace=indent,eol,start 等）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;使 :help 等命令更友好&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通常这也是很多其他高级配置（如插件系统）生效的前提&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;实际上，只要你有一个 ~/.vimrc 文件（即使为空），Vim 就会自动设置 nocompatible。但为了明确意图和避免依赖隐式行为，绝大多数配置都会显式地写上这一行，放在 .vimrc 的最开头。&lt;/p&gt;
+&lt;h3&gt;开启语法高亮和插件&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;syntax on
+set termguicolors
+filetype plugin indent on
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;syntax on&lt;/code&gt; 可以开启语法高亮&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;set termguicolors&lt;/code&gt; 启用 Vim 在终端中的真彩色（24 位颜色）支持&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;filetype plugin indent on&lt;/code&gt; 开启插件，不过这是Vim自带的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;显示行号和相对行号&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;set number relativenumber
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;开启鼠标支持&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;set mouse=a
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;调整 Tab&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;set expandtab
+set autoindent smartindent
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;绑键&lt;/h3&gt;
+&lt;p&gt;Vim 允许绑定按键，比如在插入模式中（insert），使用 &lt;code&gt;jk&lt;/code&gt; 退出插入模式&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;imap jk &amp;lt;Esc&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;外观&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;set background=dark            &quot; 使用暗色背景，适配颜色方案的高亮设计
+colorscheme slate              &quot; slate 颜色方案：白/青字+深灰底，高对比度暗色主题
+
+set cursorline                &quot; 高亮光标所在的整行，便于快速定位
+highlight CursorLine cterm=NONE ctermbg=DarkGrey guibg=#444444 guifg=NONE
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vim 9 自带了多种好看的主题，我自己感觉最好看的是 slate+灰色高亮当前行。&lt;/p&gt;
+&lt;h3&gt;底部栏&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;set laststatus=2               &quot; 始终显示状态栏（2=总是, 1=仅多窗口, 0=从不）
+set statusline=                 &quot; 清空状态栏，从头重新构建
+set statusline+=%#PmenuSel#     &quot; 模式指示区域使用弹出菜单的高亮色（更醒目）
+set statusline+=\ %{mode()}     &quot; 显示当前模式名：NORMAL / INSERT / VISUAL / REPLACE
+set statusline+=%#StatusLine#   &quot; 切回正常状态栏颜色
+set statusline+=\ %&amp;lt;%f\         &quot; 显示文件路径（相对路径），过长时左截断
+set statusline+=%h%m%r%w        &quot; 标志位：[Help] 帮助文件 [Modified]+已修改 [ReadOnly]只读 [Preview]预览
+set statusline+=%=              &quot; 分隔符：之后的内容右对齐
+set statusline+=%y\             &quot; 文件类型（如 python, rust, vim, sh）
+set statusline+=%{&amp;amp;fileencoding?&amp;amp;fileencoding:&amp;amp;encoding}\  &quot; 当前编码（如 utf-8），如果未设则用 Vim 内部编码
+set statusline+=\|              &quot; 视觉分隔符 |
+set statusline+=%-10.(%l,%c%)\  &quot; 行号,列号（左对齐，最小占 10 字符）
+set statusline+=%4P\            &quot; 当前行在文件中的百分比位置（如 Top / Bot / 50%）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;文件查找&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;set path+=**
+set wildmenu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;set path+=**&lt;/code&gt; 双星号会告诉Vim，查找文件时，递归搜索子目录&lt;/p&gt;
+&lt;p&gt;此时，你可以使用 &lt;code&gt;:find &lt;/code&gt; 来模糊查找文件。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;set wildmenu&lt;/code&gt; 增强 Vim 命令行中的补全体验&lt;/p&gt;
+&lt;p&gt;此时，使用 &lt;code&gt;:find *.xx&lt;/code&gt; 时，你可以使用 Tab 挑选匹配到的文件。&lt;/p&gt;
+&lt;p&gt;你也可以使用 &lt;code&gt;set wildmode&lt;/code&gt; 来设置补全模式：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;set wildmode=longest:full,full
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一次按 Tab：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;最长公共前缀（longest）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果只有一个匹配项，直接完整补全。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果有多个匹配，则把输入扩展到它们的共同前缀部分，但不弹出完整菜单。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二次按 Tab：&lt;/p&gt;
+&lt;p&gt;切换到 full 模式，循环显示完整的匹配项（逐个替换命令行内容，而不是仅补全公共前缀）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第三次及以后按 Tab：&lt;/p&gt;
+&lt;p&gt;继续 full 模式（因为逗号后的第二个 full 指定了后续所有 Tab 的行为），在完整匹配项中继续循环切换。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但仅仅是默认激活 &lt;code&gt;wildmenu&lt;/code&gt;，也可以获得非常好的体验。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;还有一点需要考虑，如果你在Vim中打开过一个文件，此时输入 &lt;code&gt;:ls&lt;/code&gt;，他会给你一个Vim称之为缓冲区的列表。这些缓冲区基本上就是它保存在内存中的文件。&lt;/p&gt;
+&lt;p&gt;如果你打开过多个文件，当你输入 &lt;code&gt;:ls&lt;/code&gt;，Vim会列出这些文件，然后你可以通过buffer命令，输入 &lt;code&gt;:b [之前使用ls命令列出的编号]&lt;/code&gt; 来跳转到对应文件，或者直接在 &lt;code&gt;:b &lt;/code&gt; 后面输入部分文件名，通过 Tab 来选择匹配到子字符串的文件。&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;:bd 1 2 3&lt;/code&gt; 可以关闭编号为1、2、3的buffer。&lt;/p&gt;
+&lt;p&gt;所以，熟练使用find和buffer命令，你可以在不需要任何其他依赖项的情况下完成大量的导航操作。&lt;/p&gt;
+&lt;p&gt;当然，你也可以绑键来快速切换buffer。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&quot; 模糊查找文件名（配合 path+=** 遍历子目录）
+nnoremap &amp;lt;leader&amp;gt;f :find&amp;lt;Space&amp;gt;
+&quot; 浏览最近打开过的文件列表（:oldfiles）
+nnoremap &amp;lt;leader&amp;gt;r :browse oldfiles&amp;lt;CR&amp;gt;
+&quot; ========================================
+&quot; Buffer / 窗口管理（多文件编辑）
+&quot; ========================================
+set hidden                     &quot; 允许修改未保存时切换 buffer，内容保留在内存中不会丢失
+nnoremap &amp;lt;leader&amp;gt;q :bp\|bd #&amp;lt;CR&amp;gt;
+nnoremap &amp;lt;leader&amp;gt;bn :bnext&amp;lt;CR&amp;gt;    
+nnoremap &amp;lt;leader&amp;gt;bp :bprevious&amp;lt;CR&amp;gt;
+nnoremap &amp;lt;leader&amp;gt;bl :ls&amp;lt;CR&amp;gt;:b&amp;lt;Space&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;分屏&lt;/h2&gt;
+&lt;p&gt;Vim自带非常方便的分屏功能&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;水平分屏&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;:split&lt;/code&gt; 或 &lt;code&gt;:sp&lt;/code&gt;，快捷键 &lt;code&gt;Ctrl-w s&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;垂直分屏&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;:vsplit&lt;/code&gt; 或 &lt;code&gt;:vsp&lt;/code&gt;，快捷键 &lt;code&gt;Ctrl-w v&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;切换窗口&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Ctrl-w w&lt;/code&gt; 或 &lt;code&gt;Ctrl-w h/j/k/l&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;调整大小&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Ctrl-w +/–&lt;/code&gt; 用于增减高度，&lt;code&gt;Ctrl-w &amp;gt;/&amp;lt;&lt;/code&gt; 用于增减宽度&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Ctrl-w =&lt;/code&gt; 可以等分窗口&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;仅保留当前页面：&lt;code&gt;Ctrl-w o&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;标签页&lt;/h2&gt;
+&lt;p&gt;如果你有同时编辑多个文档的需求，设置标签页（顶部标签行能够让你更快速地进行切换。&lt;/p&gt;
+&lt;p&gt;在netrw中对文件按t即可创建新标签页。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&quot; ========================================
+&quot; 标签页栏（顶部标签行）
+&quot; ========================================
+set showtabline=2              &quot; 始终显示标签页栏（2=总是, 1=仅多标签页, 0=从不）
+set tabline=%!MyTabLine()      &quot; 使用自定义函数 MyTabLine() 渲染标签页栏
+function! MyTabLine()
+  let s = &apos;&apos;
+  for i in range(tabpagenr(&apos;$&apos;))           &quot; 遍历所有标签页
+    let buflist = tabpagebuflist(i + 1)    &quot; 获取该标签页的 buffer 列表
+    let winnr = tabpagewinnr(i + 1)        &quot; 该标签页当前激活的窗口编号
+    let bufname = bufname(buflist[winnr - 1])  &quot; 当前窗口对应的文件名（含路径）
+    let bufname = fnamemodify(bufname, &apos;:t&apos;)    &quot; 仅保留文件名，去掉目录路径
+    if bufname == &apos;&apos;                        &quot; 若为未命名 buffer（如新建文件尚未保存）
+      let bufname = &apos;[No Name]&apos;
+    endif
+    let s .= &apos;%&apos; . (i + 1) . &apos;T&apos;           &quot; 标签页跳转标记（点击时切换到对应标签页）
+    let s .= (i + 1 == tabpagenr() ? &apos;%#TabLineSel#&apos; : &apos;%#TabLine#&apos;)  &quot; 当前标签页使用高亮色
+    let s .= &apos; &apos; . (i + 1) . &apos;: &apos; . bufname . &apos; &apos;  &quot; 格式：编号: 文件名
+  endfor
+  let s .= &apos;%#TabLineFill#%T&apos;              &quot; 填充右侧空白区域
+  return s
+endfunction
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;绑键方便切换&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&quot; Tab 切换到下一个标签页
+nnoremap &amp;lt;Tab&amp;gt; gt
+&quot; Shift+Tab 切换到上一个标签页
+nnoremap &amp;lt;S-Tab&amp;gt; gT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;使用数字+gt即可切换到对应标签页。&lt;/p&gt;
+&lt;h2&gt;标签跳转&lt;/h2&gt;
+&lt;p&gt;这需要一个额外的插件，叫作ctags&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo pacman -S ctags
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;你只需要安装他，并在Vim中配置。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;set tags=./tags;,tags
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在你的项目中使用&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ctags -R .
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;它会自动分析你的项目，然后你就可以随意跳转标签了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;^]&lt;/code&gt; 跳转到定义&lt;/li&gt;
+&lt;li&gt;如果有多个定义，可以使用 &lt;code&gt;g^]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;^t&lt;/code&gt; 返回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;自动补全&lt;/h2&gt;
+&lt;h3&gt;代码片段补全&lt;/h3&gt;
+&lt;p&gt;Vim自带，可以稍微配置一下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;set completeopt=menuone,noinsert,noselect  &quot; menuone=单个结果也弹菜单, noinsert=不自动插入, noselect=不高亮首项
+set pumheight=12              &quot; 补全弹出菜单最多显示 12 行
+set shortmess+=c              &quot; 抑制补全中的 &quot;match X of Y&quot; 消息，减少闪烁
+set dictionary+=/usr/share/dict/words
+
+set complete=.,w,b,u,t,i,k  &quot; 明确指定补全源（去掉无效的 spell）
+set infercase                 &quot; 补全时智能匹配大小写
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;插入模式下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;^x^n 根据当前文件补全&lt;/li&gt;
+&lt;li&gt;^x^f 补全文件名&lt;/li&gt;
+&lt;li&gt;^x^] 只补全标签&lt;/li&gt;
+&lt;li&gt;^n ^p 选择补全选项&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;括号、引号补全&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;inoremap ( ()&amp;lt;left&amp;gt;
+inoremap { {}&amp;lt;left&amp;gt;
+inoremap [ []&amp;lt;left&amp;gt;
+inoremap &quot; &quot;&quot;&amp;lt;left&amp;gt;
+inoremap &apos; &apos;&apos;&amp;lt;left&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;文件浏览&lt;/h2&gt;
+&lt;h3&gt;文件浏览器&lt;/h3&gt;
+&lt;p&gt;Vim 自带的，勉强够用&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&quot; ========================================
+&quot; netrw 文件浏览器
+&quot; ========================================
+let g:netrw_liststyle = 3      &quot; 树形显示（1=普通列表, 2=详细信息, 3=树形, 0=普通变体）
+let g:netrw_banner = 0         &quot; 去掉顶部的帮助/路径信息横幅（清爽）
+let g:netrw_winsize = 25       &quot; 当打开文件浏览器时，占用窗口宽度的 25%（其余留给编辑区）
+let g:netrw_browse_split = 4   &quot; 打开文件时的默认行为：4 表示在先前使用的窗口中打开（避免多分屏）
+&quot; let g:netrw_chgwin = 0         &quot; 指定 netrw 窗口的编号（较少用到）
+let g:netrw_altv = 1            &quot; 垂直分屏时新文件打开在 netrw 的右侧
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果觉得不习惯，可以修改快捷键&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&quot; netrw 窗口内的自定义快捷键（仅在该 buffer 中生效）
+augroup custom_netrw_mappings   
+    autocmd! 
+    &quot; l 键打开文件/文件夹（类似普通文件管理器）
+    autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; l &amp;lt;CR&amp;gt;      
+    autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; a %
+    autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; A d
+    autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; r R
+augroup END
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;我的完整Vim配置&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details close&amp;gt;&amp;lt;summary&amp;gt;完整配置&amp;lt;/summary&amp;gt;
+&quot; ========================================
+&quot; 基础兼容性
+&quot; ========================================
+set nocompatible              &quot; 关闭 Vi 兼容模式，启用 Vim 全部功能（必须放第一行）&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 语法与外观
+&quot; ========================================
+syntax on                     &quot; 启用语法高亮，根据文件类型着色关键字、字符串等
+set termguicolors             &quot; 启用终端真彩色（24-bit），需终端支持（如 kitty）
+filetype plugin indent on            &quot; 启用文件类型检测，加载对应 ftplugin 脚本
+set number relativenumber     &quot; 混合行号：当前行显示绝对行号，其余行显示到光标的相对距离
+set mouse=a                   &quot; 在所有模式下启用鼠标：点击定位、滚轮滚动、可视化选择&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 缩进与制表符
+&quot; ========================================
+set expandtab                 &quot; 按 Tab 时插入空格而非制表符（便于团队统一缩进风格）
+set autoindent smartindent     &quot; autoindent=保持上一行缩进, smartindent=根据代码语法自动增减缩进&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 文件搜索与命令补全
+&quot; ========================================
+set path+=**                  &quot; 递归子目录加入搜索路径，:find 可在整个项目中找文件
+set wildmenu                  &quot; 命令行 Tab 补全时弹出横向菜单，列出所有候选项
+set wildmode=longest:full,full &quot; 第一次 Tab：补全到最长公共前缀并显示菜单；后续 Tab：轮流选择&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 补全（插入模式下 Ctrl-x 子模式）
+&quot; ========================================
+set completeopt=menuone,noinsert,noselect  &quot; menuone=单个结果也弹菜单, noinsert=不自动插入, noselect=不高亮首项
+set pumheight=12              &quot; 补全弹出菜单最多显示 12 行
+set shortmess+=c              &quot; 抑制补全中的 &quot;match X of Y&quot; 消息，减少闪烁
+set dictionary+=/usr/share/dict/words&lt;/p&gt;
+&lt;p&gt;set complete=.,w,b,u,t,i,k  &quot; 明确指定补全源（去掉无效的 spell）
+set infercase                 &quot; 补全时智能匹配大小写&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 括号、引号自动配对
+&quot; ========================================
+&quot; 输入左括号/引号时自动补全右侧符号，光标留在中间
+inoremap ( ()&amp;lt;left&amp;gt;
+inoremap { {}&amp;lt;left&amp;gt;
+inoremap [ []&amp;lt;left&amp;gt;
+inoremap &quot; &quot;&quot;&amp;lt;left&amp;gt;
+inoremap &apos; &apos;&apos;&amp;lt;left&amp;gt;&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 映射 &amp;lt;Leader&amp;gt;cd 复制当前文件所在目录路径
+&quot; ========================================
+&quot; nnoremap &amp;lt;Leader&amp;gt;cd :let @+ = expand(&quot;%:p:h&quot;)&amp;lt;CR&amp;gt;:echo &quot;Copied: &quot; . expand(&quot;%:p:h&quot;)&amp;lt;CR&amp;gt;
+&quot; 下面一行使用 wl-copy 命令直接写入 Wayland 剪贴板
+nnoremap &amp;lt;Leader&amp;gt;cd :let @a = expand(&quot;%:p:h&quot;) | call system(&apos;wl-copy&apos;, @a)&amp;lt;CR&amp;gt;:echo &quot;Copied: &quot; . expand(&quot;%:p:h&quot;)&amp;lt;CR&amp;gt;&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 搜索时忽略大小写并高亮
+&quot; ========================================
+set ignorecase smartcase       &quot; ignorecase=默认忽略大小写, smartcase=搜索词含大写时自动区分
+set hlsearch incsearch         &quot; hlsearch=高亮所有匹配项, incsearch=逐字符实时跳转到首个匹配
+&quot; F3 搜索光标下单词但停在原地（* 默认会跳到下一个匹配）
+nnoremap &amp;lt;F3&amp;gt; *N&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 实时显示命令
+&quot; ========================================
+set showcmd                    &quot; 右下角显示正在输入的命令前缀&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 显示模式（INSERT / VISUAL）
+&quot; ========================================
+set showmode                   &quot; 左下角显示当前模式（-- INSERT -- / -- VISUAL -- / -- REPLACE --）&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 全局快捷映射
+&quot; ========================================
+&quot; 打开/切换左侧文件浏览器侧边栏
+nnoremap &amp;lt;leader&amp;gt;e :Lexplore&amp;lt;CR&amp;gt;&lt;br /&gt;
+&quot; Tab 切换到下一个标签页
+nnoremap &amp;lt;Tab&amp;gt; gt
+&quot; Shift+Tab 切换到上一个标签页
+nnoremap &amp;lt;S-Tab&amp;gt; gT&lt;br /&gt;
+&quot; 模糊查找文件名（配合 path+=** 遍历子目录）
+nnoremap &amp;lt;leader&amp;gt;f :find&amp;lt;Space&amp;gt;
+&quot; 浏览最近打开过的文件列表（:oldfiles）
+nnoremap &amp;lt;leader&amp;gt;r :browse oldfiles&amp;lt;CR&amp;gt;
+imap jk &amp;lt;Esc&amp;gt;&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; Buffer / 窗口管理（多文件编辑）
+&quot; ========================================
+set hidden                     &quot; 允许修改未保存时切换 buffer，内容保留在内存中不会丢失
+nnoremap &amp;lt;leader&amp;gt;q :bp|bd #&amp;lt;CR&amp;gt;
+nnoremap &amp;lt;leader&amp;gt;bn :bnext&amp;lt;CR&amp;gt;&lt;br /&gt;
+nnoremap &amp;lt;leader&amp;gt;bp :bprevious&amp;lt;CR&amp;gt;
+nnoremap &amp;lt;leader&amp;gt;bl :ls&amp;lt;CR&amp;gt;:b&amp;lt;Space&amp;gt;&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; netrw 文件浏览器
+&quot; ========================================
+let g:netrw_liststyle = 3      &quot; 树形显示（1=普通列表, 2=详细信息, 3=树形, 0=普通变体）
+let g:netrw_banner = 0         &quot; 去掉顶部的帮助/路径信息横幅（清爽）
+let g:netrw_winsize = 25       &quot; 当打开文件浏览器时，占用窗口宽度的 25%（其余留给编辑区）
+let g:netrw_browse_split = 4   &quot; 打开文件时的默认行为：4 表示在先前使用的窗口中打开（避免多分屏）
+&quot; let g:netrw_chgwin = 0         &quot; 指定 netrw 窗口的编号（较少用到）
+let g:netrw_altv = 1            &quot; 垂直分屏时新文件打开在 netrw 的右侧&lt;/p&gt;
+&lt;p&gt;&quot; netrw 窗口内的自定义快捷键（仅在该 buffer 中生效）
+augroup custom_netrw_mappings&lt;br /&gt;
+autocmd!
+&quot; l 键打开文件/文件夹（类似普通文件管理器）
+autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; l &amp;lt;CR&amp;gt;&lt;br /&gt;
+autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; a %
+autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; A d
+autocmd FileType netrw nmap &amp;lt;buffer&amp;gt; r R
+augroup END&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 外观主题
+&quot; ========================================
+set background=dark            &quot; 使用暗色背景，适配颜色方案的高亮设计
+colorscheme slate              &quot; slate 颜色方案：白/青字+深灰底，高对比度暗色主题&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 高亮当前行
+&quot; ========================================
+set cursorline                &quot; 高亮光标所在的整行，便于快速定位
+highlight CursorLine cterm=NONE ctermbg=DarkGrey guibg=#444444 guifg=NONE&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 状态栏（底部信息条）
+&quot; ========================================
+set laststatus=2               &quot; 始终显示状态栏（2=总是, 1=仅多窗口, 0=从不）
+set statusline=                 &quot; 清空状态栏，从头重新构建
+set statusline+=%#PmenuSel#     &quot; 模式指示区域使用弹出菜单的高亮色（更醒目）
+set statusline+=\ %{mode()}     &quot; 显示当前模式名：NORMAL / INSERT / VISUAL / REPLACE
+set statusline+=%#StatusLine#   &quot; 切回正常状态栏颜色
+set statusline+=\ %&amp;lt;%f\         &quot; 显示文件路径（相对路径），过长时左截断
+set statusline+=%h%m%r%w        &quot; 标志位：[Help] 帮助文件 [Modified]+已修改 [ReadOnly]只读 [Preview]预览
+set statusline+=%=              &quot; 分隔符：之后的内容右对齐
+set statusline+=%y\             &quot; 文件类型（如 python, rust, vim, sh）
+set statusline+=%{&amp;amp;fileencoding?&amp;amp;fileencoding:&amp;amp;encoding}\  &quot; 当前编码（如 utf-8），如果未设则用 Vim 内部编码
+set statusline+=|              &quot; 视觉分隔符 |
+set statusline+=%-10.(%l,%c%)\  &quot; 行号,列号（左对齐，最小占 10 字符）
+set statusline+=%4P\            &quot; 当前行在文件中的百分比位置（如 Top / Bot / 50%）&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 标签页栏（顶部标签行）
+&quot; ========================================
+set showtabline=2              &quot; 始终显示标签页栏（2=总是, 1=仅多标签页, 0=从不）
+set tabline=%!MyTabLine()      &quot; 使用自定义函数 MyTabLine() 渲染标签页栏
+function! MyTabLine()
+let s = &apos;&apos;
+for i in range(tabpagenr(&apos;$&apos;))           &quot; 遍历所有标签页
+let buflist = tabpagebuflist(i + 1)    &quot; 获取该标签页的 buffer 列表
+let winnr = tabpagewinnr(i + 1)        &quot; 该标签页当前激活的窗口编号
+let bufname = bufname(buflist[winnr - 1])  &quot; 当前窗口对应的文件名（含路径）
+let bufname = fnamemodify(bufname, &apos;:t&apos;)    &quot; 仅保留文件名，去掉目录路径
+if bufname == &apos;&apos;                        &quot; 若为未命名 buffer（如新建文件尚未保存）
+let bufname = &apos;[No Name]&apos;
+endif
+let s .= &apos;%&apos; . (i + 1) . &apos;T&apos;           &quot; 标签页跳转标记（点击时切换到对应标签页）
+let s .= (i + 1 == tabpagenr() ? &apos;%#TabLineSel#&apos; : &apos;%#TabLine#&apos;)  &quot; 当前标签页使用高亮色
+let s .= &apos; &apos; . (i + 1) . &apos;: &apos; . bufname . &apos; &apos;  &quot; 格式：编号: 文件名
+endfor
+let s .= &apos;%#TabLineFill#%T&apos;              &quot; 填充右侧空白区域
+return s
+endfunction&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 滚动与响应
+&quot; ========================================
+set scrolloff=8                &quot; 光标距离屏幕顶部/底部至少保留 8 行再开始滚动（避免光标总在边缘）
+set sidescrolloff=8            &quot; 横向滚动时，光标距离屏幕左/右至少保留 8 列
+set timeoutlen=300            &quot; 映射键序列的等待超时（毫秒），值越小按键响应越快（默认 1000）&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 内置扩展包
+&quot; ========================================
+packadd! matchit               &quot; 加载 Vim 内置 matchit 包：% 键可匹配 if/else/endif、HTML 标签等&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 注释切换（适用于 # 注释符的语言：Python/Shell/Ruby/YAML 等）
+&quot; ========================================
+xnoremap gc :s/^/# /&amp;lt;CR&amp;gt;:nohlsearch&amp;lt;CR&amp;gt;   &quot; 可视模式 gc 注释选中的行（行首加 #）
+xnoremap gv :s/^# //&amp;lt;CR&amp;gt;:nohlsearch&amp;lt;CR&amp;gt;   &quot; 可视模式 gC 取消注释选中的行（去掉 #）
+nnoremap gcc :s/^/# /&amp;lt;CR&amp;gt;:nohlsearch&amp;lt;CR&amp;gt;  &quot; 普通模式 gcc 注释当前行
+nnoremap gvv :s/^# //&amp;lt;CR&amp;gt;:nohlsearch&amp;lt;CR&amp;gt;  &quot; 普通模式 gCC 取消注释当前行&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 系统剪贴板复制（Ctrl+Shift+O，不污染寄存器）
+&quot; ========================================
+if executable(&apos;wl-copy&apos;)
+function! s:Clip(text) abort
+call system(&apos;wl-copy&apos;, a:text)
+endfunction
+elseif executable(&apos;xclip&apos;)
+function! s:Clip(text) abort
+call system(&apos;xclip -selection clipboard&apos;, a:text)
+endfunction
+elseif executable(&apos;pbcopy&apos;)
+function! s:Clip(text) abort
+call system(&apos;pbcopy&apos;, a:text)
+endfunction
+else
+function! s:Clip(text) abort
+endfunction
+endif&lt;/p&gt;
+&lt;p&gt;execute &quot;set &amp;lt;F28&amp;gt;=&amp;lt;Esc&amp;gt;[67;6u&quot;&lt;/p&gt;
+&lt;p&gt;nnoremap &amp;lt;F28&amp;gt; :call &amp;lt;SID&amp;gt;Clip(getline(&apos;.&apos;) . &quot;\n&quot;)&amp;lt;CR&amp;gt;:echo &apos;Line copied&apos;&amp;lt;CR&amp;gt;
+xnoremap &amp;lt;F28&amp;gt; &amp;lt;Esc&amp;gt;:call &amp;lt;SID&amp;gt;Clip(join(getline(&quot;&apos;&amp;lt;&quot;, &quot;&apos;&amp;gt;&quot;), &quot;\n&quot;) . &quot;\n&quot;)&amp;lt;CR&amp;gt;gv:echo &apos;Selection copied&apos;&amp;lt;CR&amp;gt;&lt;/p&gt;
+&lt;p&gt;set splitbelow splitright
+set backspace=indent,eol,start&lt;/p&gt;
+&lt;p&gt;&quot; ========================================
+&quot; 标签跳转
+&quot; ========================================
+set tags=./tags;,tags&lt;/p&gt;
+&lt;p&gt;nnoremap &amp;lt;leader&amp;gt;t :term&amp;lt;CR&amp;gt;
+tnoremap &amp;lt;leader&amp;gt;t &amp;lt;C-&amp;gt;&amp;lt;C-n&amp;gt;:q!&amp;lt;CR&amp;gt;&lt;/p&gt;
+&lt;p&gt;nnoremap &amp;lt;F5&amp;gt; :w &amp;lt;bar&amp;gt; !python3 %&amp;lt;CR&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;/details&amp;gt;&lt;/p&gt;
+</content:encoded></item><item><title>MySQL 查询命令速查</title><link>https://wuxushangzeng.github.io/posts/mysql/</link><guid isPermaLink="true">https://wuxushangzeng.github.io/posts/mysql/</guid><description>MySQL 查询命令速查</description><pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;一、基础查询&lt;/h2&gt;
 &lt;pre&gt;&lt;code&gt;-- 查询所有列
 SELECT * FROM employees;
 
